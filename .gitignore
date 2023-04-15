@@ -87,3 +87,6 @@ local.properties
 target/
 
 /bin
+
+# all files ending in .pem
+*.pem
