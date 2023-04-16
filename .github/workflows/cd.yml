@@ -3,8 +3,6 @@ name: Deploy project
 on:
   push:
     branches: [ "main" ]
-  pull_request: # This is for testing purposes only
-    branches: [ "main" ]
 
 jobs:
   docker:
