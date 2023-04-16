@@ -29,3 +29,15 @@ jobs:
           image: giangh14cqt/bookaholic-backend
           push: true
           tags: giangh14cqt/bookaholic-backend:latest
+      -
+        name: Trigger deployment
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          proxy_key: ${{ secrets.PROXY_KEY }}
+          script: |
+            docker pull giangh14cqt/bookaholic-backend:latest
+            docker stop bookaholic-backend
+            docker rm bookaholic-backend
+            docker run -d --name bookaholic-backend -p 8080:8080 giangh14cqt/bookaholic-backend:latest
