@@ -35,7 +35,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          proxy_key: ${{ secrets.PROXY_KEY }}
+          key: ${{ secrets.KEY }}
           script: |
             docker pull giangh14cqt/bookaholic-backend:latest
             docker stop bookaholic-backend
