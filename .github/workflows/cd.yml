@@ -35,10 +35,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
-            export DATASOURCE_URL = ${{ secrets.DATASOURCE_URL }}
-            export DATASOURCE_USERNAME = ${{ secrets.DATASOURCE_USERNAME }}
-            export DATASOURCE_PASSWORD = ${{ secrets.DATASOURCE_PASSWORD }}
             sudo docker pull giangh14cqt/bookaholic-backend:latest
             sudo docker stop bookaholic-backend
             sudo docker rm bookaholic-backend
-            sudo docker run -d --name bookaholic-backend -p 8080:8080 giangh14cqt/bookaholic-backend:latest
+            sudo docker run -d --name bookaholic-backend -p 8080:8080 --env-file env giangh14cqt/bookaholic-backend:latest
