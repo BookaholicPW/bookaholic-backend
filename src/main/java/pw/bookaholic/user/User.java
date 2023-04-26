@@ -29,9 +29,9 @@ public class User implements UserDetails {
     private String avatar;
     private String bio;
 //    @NotNull
-    private Date createdAt;
+    private Long createdAt;
 //    @NotNull
-    private Date updatedAt;
+    private Long updatedAt;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

@@ -24,6 +24,8 @@ public class ApplicationConfig {
         return new ModelMapper();
     }
 
+    public static final ModelMapper modelMapper = new ModelMapper();
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
