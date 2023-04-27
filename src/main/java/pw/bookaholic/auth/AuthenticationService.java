@@ -37,7 +37,7 @@ public class AuthenticationService {
         return response(convertEntityToBase(savedUser), "Successfully registered");
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public Object authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -47,8 +47,11 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
+        return response(AuthenticationResponse.builder()
                 .token(jwtToken)
-                .build();
+                .build(), "Successfully authenticated");
+//        return AuthenticationResponse.builder()
+//                .token(jwtToken)
+//                .build();
     }
 }
