@@ -9,6 +9,8 @@ import pw.bookaholic.config.JwtService;
 import pw.bookaholic.user.User;
 import pw.bookaholic.user.UserRepository;
 
+import java.util.UUID;
+
 import static pw.bookaholic.user.UserService.convertEntityToBase;
 import static pw.bookaholic.utils.Utils.response;
 
@@ -33,6 +35,7 @@ public class AuthenticationService {
                 .build();
         user.setCreatedAt(System.currentTimeMillis());
         user.setUpdatedAt(System.currentTimeMillis());
+        user.setId(UUID.randomUUID());
         User savedUser = userRepository.save(user);
         return response(convertEntityToBase(savedUser), "Successfully registered");
     }

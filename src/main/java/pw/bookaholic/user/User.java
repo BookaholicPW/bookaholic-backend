@@ -18,7 +18,6 @@ import java.util.UUID;
 @Setter
 public class User implements UserDetails {
     @Id
-    @Transient
     private UUID id;
     @NotNull
     private String email;
