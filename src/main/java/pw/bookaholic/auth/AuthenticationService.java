@@ -23,6 +23,10 @@ public class AuthenticationService {
     public Object register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail()))
             throw new RuntimeException("Email already exists");
+        if (!request.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
+            throw new RuntimeException("Invalid email");
+        if (!(request.getPassword().length() >= 8))
+            throw new RuntimeException("Password must be at least 8 characters");
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
