@@ -17,14 +17,13 @@ import pw.bookaholic.user.UserRepository;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
+    public static final ModelMapper modelMapper = new ModelMapper();
     private final UserRepository userRepository;
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
-    public static final ModelMapper modelMapper = new ModelMapper();
 
     @Bean
     public UserDetailsService userDetailsService() {
