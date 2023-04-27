@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Date;
+import java.util.UUID;
 
 @Builder
 @Entity
@@ -18,20 +18,20 @@ import java.util.Date;
 @Setter
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @NotNull
     private String email;
     @NotNull
     private String password;
-//    @NotNull
+    //    @NotNull
     private String name;
     private String avatar;
     private String bio;
-//    @NotNull
+    //    @NotNull
     private Long createdAt;
-//    @NotNull
+    //    @NotNull
     private Long updatedAt;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
