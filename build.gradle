@@ -32,6 +32,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.mapstruct:mapstruct-jdk8:1.2.0.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
 }
 
 tasks.named('test') {
