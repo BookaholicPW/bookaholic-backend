@@ -13,8 +13,8 @@ import java.util.UUID;
 @Entity
 @Table
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Book {
@@ -30,6 +30,10 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
+//    @ManyToMany
+//    @JoinTable(name = "book_genre",
+//            joinColumns = @JoinColumn(name = "book_id"),
+//            inverseJoinColumns = @JoinColumn(name = "genre_id"))
 //    private Set<Genre> genres = new HashSet<>();
 
 //    @OneToMany(mappedBy = "book")
