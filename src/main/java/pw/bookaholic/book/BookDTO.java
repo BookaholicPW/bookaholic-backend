@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pw.bookaholic.author.Author;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -17,6 +20,7 @@ public class BookDTO {
     @NotNull
     private String title;
     private String description;
+    private Set<Author> authors = new HashSet<>();
     private String cover;
     private Integer pages;
     private Long published;

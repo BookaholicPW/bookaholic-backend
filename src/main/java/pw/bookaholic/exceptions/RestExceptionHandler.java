@@ -42,6 +42,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return responseException(exception);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AlreadyExistsException.class)
+    public Map<String, Object> handleAlreadyExistsException(AlreadyExistsException exception) {
+        return responseException(exception);
+    }
+
     public Map<String, Object> responseException(Exception exception) {
         Map<String, Object> errorMap = new HashMap<>();
         errorMap.put("success", false);
