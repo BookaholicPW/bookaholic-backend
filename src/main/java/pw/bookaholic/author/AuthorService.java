@@ -22,18 +22,14 @@ public class AuthorService {
 
 
     public Object getListAuthors() {
-        return response(authorRepository.findAll().stream()
-                .map(authorMapper::authorToAuthorDto)
-                .collect(Collectors.toList()), "Successfully found authors");
+        return response(authorRepository.findAll().stream().map(authorMapper::authorToAuthorDto).collect(Collectors.toList()),
+                "Successfully found authors");
 
     }
 
     public Object getAuthorById(UUID id) {
-        if (authorRepository.existsById(id)) {
-            return response(authorRepository.findById(id).map(authorMapper::authorToAuthorDto),
-                    "Successfully found author");
-        }
-        throw new NoSuchElementException("Not found author with this id");
+        Author author = authorRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not found author with this id"));
+        return response(authorMapper.authorToAuthorDto(author), "Successfully found author");
     }
 
     public Object addNewAuthor(AuthorDTO authorDTO) throws AlreadyExistsException {

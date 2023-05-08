@@ -24,7 +24,7 @@ public class AuthorController {
         return ResponseEntity.ok().body(authorService.getListAuthors());
     }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getAuthorById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok().body(authorService.getAuthorById(id));
     }

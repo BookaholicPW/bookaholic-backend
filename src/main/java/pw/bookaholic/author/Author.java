@@ -18,6 +18,7 @@ import java.util.UUID;
 @Getter
 public class Author {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     @NotNull
     private String name;

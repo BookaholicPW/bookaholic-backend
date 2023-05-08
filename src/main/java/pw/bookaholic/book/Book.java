@@ -19,7 +19,8 @@ import java.util.UUID;
 @Setter
 public class Book {
     @Id
-    private UUID id; // = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
     @NotNull
     private String title;
     private String description;
