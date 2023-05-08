@@ -3,6 +3,7 @@ package pw.bookaholic.author;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import pw.bookaholic.book.Book;
 
 import java.util.HashSet;
@@ -18,8 +19,9 @@ import java.util.UUID;
 @Getter
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id = UUID.randomUUID();
     @NotNull
     private String name;
     private String avatar;
