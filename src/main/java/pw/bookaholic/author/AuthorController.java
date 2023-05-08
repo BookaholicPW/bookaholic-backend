@@ -26,9 +26,6 @@ public class AuthorController {
 
     @GetMapping("/id")
     public ResponseEntity<Object> getAuthorById(@PathVariable("id") UUID id) {
-        if( authorService.getAuthorById(id).isEmpty()) {
-            throw new RuntimeException("not found id");
-        }
         return ResponseEntity.ok().body(authorService.getAuthorById(id));
     }
 
