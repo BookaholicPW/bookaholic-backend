@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  docker:
+  Deploy:
     runs-on: ubuntu-latest
     steps:
       -
@@ -26,6 +26,7 @@ jobs:
         with:
           image: giangh14cqt/bookaholic-backend
           push: true
+          platforms: linux/arm64/v8
           tags: giangh14cqt/bookaholic-backend:latest
       -
         name: Trigger deployment
@@ -38,4 +39,4 @@ jobs:
             sudo docker pull giangh14cqt/bookaholic-backend:latest
             sudo docker stop bookaholic-backend
             sudo docker rm bookaholic-backend
-            sudo docker run -d --name bookaholic-backend -p 8080:8080 --env-file env giangh14cqt/bookaholic-backend:latest
+            sudo docker run -d --name bookaholic-backend --network host --env-file .env giangh14cqt/bookaholic-backend:latest
