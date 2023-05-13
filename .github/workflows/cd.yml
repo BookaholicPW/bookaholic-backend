@@ -28,6 +28,7 @@ jobs:
         with:
           image: giangh14cqt/bookaholic-backend
           push: true
+          platforms: linux/arm64/v8
           tags: giangh14cqt/bookaholic-backend:latest
       -
         name: Trigger deployment
