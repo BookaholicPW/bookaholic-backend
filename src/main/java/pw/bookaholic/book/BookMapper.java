@@ -2,7 +2,7 @@ package pw.bookaholic.book;
 
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface BookMapper {
     Book bookDtoToBook(BookDTO bookDTO);
 
