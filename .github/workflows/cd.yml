@@ -41,4 +41,4 @@ jobs:
             sudo docker pull giangh14cqt/bookaholic-backend:latest
             sudo docker stop bookaholic-backend
             sudo docker rm bookaholic-backend
-            sudo docker run -d --name bookaholic-backend -p 8090:8080 --env-file env/env giangh14cqt/bookaholic-backend:latest
+            sudo docker run -d --name bookaholic-backend --network host --env-file .env giangh14cqt/bookaholic-backend:latest
