@@ -24,7 +24,6 @@ public class BookDTO {
     @NotNull
     private String title;
     private String description;
-    private Set<Author> authors = new HashSet<>();
     private String cover;
     private Integer pages;
     private Long published;
