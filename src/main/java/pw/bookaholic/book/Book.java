@@ -41,8 +41,8 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
 
-//    @OneToMany(mappedBy = "book")
-//    private Set<BookCharacter> characters = new HashSet<>();
+    @OneToMany(mappedBy = "book")
+    private Set<BookCharacter> characters = new HashSet<>();
 
     private String cover;
     private Integer pages;

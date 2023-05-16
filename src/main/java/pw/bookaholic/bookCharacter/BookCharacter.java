@@ -1,9 +1,10 @@
 package pw.bookaholic.bookCharacter;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import pw.bookaholic.book.Book;
 
 import java.util.UUID;
 
@@ -21,5 +22,8 @@ public class BookCharacter {
 
     private String name;
 
-    //private List<Book> books;
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "book_id")
+    private Book book;
 }
