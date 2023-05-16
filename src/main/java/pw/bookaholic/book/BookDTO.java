@@ -6,11 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pw.bookaholic.author.Author;
-
-
 import java.util.HashSet;
-
 import pw.bookaholic.bookGenre.Genre;
+import pw.bookaholic.bookCharacter.BookCharacter;
 
 import java.util.Set;
 import java.util.UUID;
@@ -29,4 +27,5 @@ public class BookDTO {
     private Long published;
     private Set<Author> authors;
     private Set<Genre> genres;
+    private Set<BookCharacter> characters;
 }
