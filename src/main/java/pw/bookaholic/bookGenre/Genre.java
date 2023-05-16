@@ -1,4 +1,4 @@
-package pw.bookaholic.author;
+package pw.bookaholic.bookGenre;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -18,25 +18,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Author {
+public class Genre {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id = UUID.randomUUID();
     @NotNull
-    private String name;
-    private String avatar;
-    private Long born;
-    private Long died;
+    String name;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.MERGE
             },
-            mappedBy = "authors")
+            mappedBy = "genres")
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
-    private String nationality;
-    private String originalLanguage;
+
+
 }
