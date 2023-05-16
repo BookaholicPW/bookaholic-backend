@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pw.bookaholic.author.Author;
+
+
+import java.util.HashSet;
+
 import pw.bookaholic.bookGenre.Genre;
 
 import java.util.Set;
