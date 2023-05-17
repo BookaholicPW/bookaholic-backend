@@ -14,7 +14,7 @@ public class UserController {
     private final UserService userService;
 
     @PutMapping()
-    public ResponseEntity<Object> updateUser(@RequestHeader HttpHeaders headers, @RequestBody UserBase user) {
+    public ResponseEntity<Object> updateUser(@RequestHeader HttpHeaders headers, @RequestBody UserBaseUpdate user) {
         return ResponseEntity.ok().body(userService.updateUser(headers, user));
     }
 
