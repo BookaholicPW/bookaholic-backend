@@ -1,11 +1,9 @@
 package pw.bookaholic.bookCharacter;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import pw.bookaholic.book.Book;
 
 import java.util.UUID;
 
@@ -25,5 +23,10 @@ public class BookCharacter {
 
     private String name;
 
-    //private List<Book> books;
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name= "book_id"
+    )
+    private Book book;
 }
