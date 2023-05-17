@@ -17,9 +17,11 @@ import static pw.bookaholic.utils.Utils.response;
 public class UserService {
     private final UserRepository userRepository;
 
-    public static UserBase convertEntityToBase(User user) {
+    public static UserBaseResponse convertEntityToBase(User user) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        return modelMapper.map(user, UserBase.class);
+        UserBaseResponse userBase = modelMapper.map(user, UserBaseResponse.class);
+        userBase.setUsername(user.getUsername_());
+        return userBase;
     }
 
     public static String getEmailFromToken(HttpHeaders headers) {
@@ -34,11 +36,13 @@ public class UserService {
             throw new IllegalStateException("User not found!");
         User userToUpdate = findUserByEmail.get();
         userToUpdate.setName(user.getName());
+        userToUpdate.setUsername_(user.getUsername());
         userToUpdate.setBio(user.getBio());
         userToUpdate.setAvatar(user.getAvatar());
         userToUpdate.setUpdatedAt(System.currentTimeMillis());
         // favoritebook, favoriteauthor, favoritegenre
-        return response(convertEntityToBase(userRepository.save(userToUpdate)), "Successfully updated");
+        User savedUser = userRepository.save(userToUpdate);
+        return response(convertEntityToBase(savedUser), "Successfully updated user info");
     }
 
     public Object getUserInfo(HttpHeaders headers) {

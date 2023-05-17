@@ -26,16 +26,11 @@ public class User implements UserDetails {
     private String email;
     @NotNull
     private String password;
-//    @NotNull
     private String name;
-//    @NotNull
-    @UniqueElements
-    private String username;
+    private String username_;
     private String avatar;
     private String bio;
-//    @NotNull
     private Long createdAt;
-//    @NotNull
     private Long updatedAt;
 
     @Override
