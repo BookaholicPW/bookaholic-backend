@@ -1,8 +1,6 @@
 package pw.bookaholic.verification;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,9 +12,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 public class VerificationToken {
 
     // sequence
+    @Id
     private Long id;
     @Column(nullable=false)
     private String token;
@@ -39,4 +39,5 @@ public class VerificationToken {
         this.expiresAt = expiredAt;
         this.user = user;
     }
+
 }

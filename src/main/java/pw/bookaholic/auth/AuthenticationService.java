@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import pw.bookaholic.config.JwtService;
 import pw.bookaholic.user.User;
 import pw.bookaholic.user.UserRepository;
+import pw.bookaholic.verification.VerificationService;
+import pw.bookaholic.verification.VerificationToken;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static pw.bookaholic.user.UserService.convertEntityToBase;
@@ -21,6 +24,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private final VerificationService verificationService;
 
     public Object register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail()))
@@ -37,6 +42,17 @@ public class AuthenticationService {
         user.setUpdatedAt(System.currentTimeMillis());
         user.setId(UUID.randomUUID());
         User savedUser = userRepository.save(user);
+
+        String token = UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(20),
+                savedUser
+        );
+        verificationService.saveVerificationToken(verificationToken);
+
+
         return response(convertEntityToBase(savedUser), "Successfully registered");
     }
 

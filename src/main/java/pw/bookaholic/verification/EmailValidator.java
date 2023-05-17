@@ -1,4 +1,4 @@
-package pw.bookaholic.auth;
+package pw.bookaholic.verification;
 
 public class EmailValidator {
 }
