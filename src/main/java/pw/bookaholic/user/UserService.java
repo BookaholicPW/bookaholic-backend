@@ -27,12 +27,13 @@ public class UserService {
         return extractUserEmail(token);
     }
 
-    public Object updateUser(HttpHeaders headers, UserBase user) {
+    public Object updateUser(HttpHeaders headers, UserBaseUpdate user) {
         String email = getEmailFromToken(headers);
         Optional<User> findUserByEmail = userRepository.findByEmail(email);
         if (findUserByEmail.isEmpty())
             throw new IllegalStateException("User not found!");
         User userToUpdate = findUserByEmail.get();
+        userToUpdate.setName(user.getName());
         userToUpdate.setBio(user.getBio());
         userToUpdate.setAvatar(user.getAvatar());
         userToUpdate.setUpdatedAt(System.currentTimeMillis());

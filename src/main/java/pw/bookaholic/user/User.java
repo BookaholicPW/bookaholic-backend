@@ -1,8 +1,11 @@
 package pw.bookaholic.user;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,13 +26,16 @@ public class User implements UserDetails {
     private String email;
     @NotNull
     private String password;
-    //    @NotNull
+//    @NotNull
     private String name;
+//    @NotNull
+    @UniqueElements
+    private String username;
     private String avatar;
     private String bio;
-    //    @NotNull
+//    @NotNull
     private Long createdAt;
-    //    @NotNull
+//    @NotNull
     private Long updatedAt;
 
     @Override
