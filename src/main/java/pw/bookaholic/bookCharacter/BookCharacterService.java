@@ -18,7 +18,8 @@ public class BookCharacterService {
     public ResponseEntity<Void> addBookCharacter(BookCharacterDTO bookCharDTO){
         BookCharacter bookCharacter = new BookCharacter(
                 bookCharDTO.getId(),
-                bookCharDTO.getName());
+                bookCharDTO.getName(),
+                bookCharDTO.getBook());
         bookCharacterRepo.save(bookCharacter);
 
         return ResponseEntity.ok().build();
@@ -41,7 +42,7 @@ public class BookCharacterService {
         }
         BookCharacter bookCharacter = optBookChar.get();
 
-        return new BookCharacterDTO(bookCharacter.getId(), bookCharacter.getName());
+        return new BookCharacterDTO(bookCharacter.getId(), bookCharacter.getName(), bookCharacter.getBook());
     }
 
 

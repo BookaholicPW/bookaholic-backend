@@ -24,6 +24,7 @@ public class Book {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id = UUID.randomUUID();
+
     @NotNull
     private String title;
     private String description;
@@ -40,8 +41,8 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
 
-//    @OneToMany(mappedBy = "book")
-//    private Set<BookCharacter> characters = new HashSet<>();
+    @OneToMany(mappedBy = "book")
+    private Set<BookCharacter> characters = new HashSet<>();
 
     private String cover;
     private Integer pages;
