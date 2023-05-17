@@ -18,4 +18,6 @@ public class UserBaseResponse {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
+
+    private boolean verified;
 }

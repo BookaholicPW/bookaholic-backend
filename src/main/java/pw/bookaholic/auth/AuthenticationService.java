@@ -1,5 +1,6 @@
 package pw.bookaholic.auth;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,10 +9,13 @@ import org.springframework.stereotype.Service;
 import pw.bookaholic.config.JwtService;
 import pw.bookaholic.user.User;
 import pw.bookaholic.user.UserRepository;
+import pw.bookaholic.user.UserService;
 import pw.bookaholic.verification.VerificationService;
 import pw.bookaholic.verification.VerificationToken;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static pw.bookaholic.user.UserService.convertEntityToBase;
@@ -26,6 +30,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     private final VerificationService verificationService;
+    private final UserService userService;
 
     public Object register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail()))
@@ -73,4 +78,34 @@ public class AuthenticationService {
 //                .token(jwtToken)
 //                .build();
     }
+
+    @Transactional
+    public boolean confirmVerificationToken(String token){
+        Optional<VerificationToken> verTokenOpt = verificationService
+                .getToken(token);
+
+        if(verTokenOpt.isEmpty()){
+            return false;
+        }
+
+        VerificationToken verToken = verTokenOpt.get();
+
+        if(verToken.getConfirmedAt() != null){
+            throw new IllegalStateException("Email already verified");
+        }
+
+        LocalDateTime expires = verToken.getExpiresAt();
+
+        if(expires.isBefore(LocalDateTime.now())){
+            return false;
+        }
+
+        verificationService.setConfirmedAt(verToken);
+
+        userService.verifyUser(verToken.getUser().getEmail());
+
+        return true;
+
+    }
+
 }

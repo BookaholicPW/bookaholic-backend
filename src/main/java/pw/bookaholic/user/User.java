@@ -33,6 +33,8 @@ public class User implements UserDetails {
     private Long createdAt;
     private Long updatedAt;
 
+    private boolean verified=false;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -60,6 +62,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return verified;
     }
 }
