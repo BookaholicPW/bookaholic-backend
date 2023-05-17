@@ -12,8 +12,8 @@ import pw.bookaholic.user.UserRepository;
 import pw.bookaholic.user.UserService;
 import pw.bookaholic.verification.VerificationService;
 import pw.bookaholic.verification.VerificationToken;
+import pw.bookaholic.verification.email.EmailSender;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +31,7 @@ public class AuthenticationService {
 
     private final VerificationService verificationService;
     private final UserService userService;
+    private final EmailSender emailSender;
 
     public Object register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail()))
@@ -57,6 +58,8 @@ public class AuthenticationService {
         );
         verificationService.saveVerificationToken(verificationToken);
 
+        String link = "http://api.bookaholic.pl/account/verify?token="+token;
+        emailSender.send(request.getEmail(), link);
 
         return response(convertEntityToBase(savedUser), "Successfully registered");
     }
