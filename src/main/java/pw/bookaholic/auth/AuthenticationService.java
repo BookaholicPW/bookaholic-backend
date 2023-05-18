@@ -58,7 +58,7 @@ public class AuthenticationService {
         );
         verificationService.saveVerificationToken(verificationToken);
 
-        String link = "http://api.bookaholic.pl/account/verify?token="+token;
+        String link = "https://api.bookaholic.pl/account/verify?token=" +token;
         emailSender.send(request.getEmail(), link);
 
         return response(convertEntityToBase(savedUser), "Successfully registered");
