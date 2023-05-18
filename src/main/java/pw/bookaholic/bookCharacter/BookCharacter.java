@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import pw.bookaholic.book.Book;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -24,9 +26,7 @@ public class BookCharacter {
     private String name;
 
     @ManyToOne
-    @JoinColumn(
-            nullable = false,
-            name= "book_id"
-    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "book_id")
     private Book book;
 }
