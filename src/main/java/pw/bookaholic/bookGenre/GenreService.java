@@ -2,6 +2,7 @@ package pw.bookaholic.bookGenre;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pw.bookaholic.exceptions.AlreadyExistsException;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -26,10 +27,9 @@ public class GenreService {
         return response(genreMapper.genreToGenreDto(genre), "Successfully found genre");
     }
 
-    public Object addNewGenre(GenreDTO genreDTO) throws Exception {
+    public Object addNewGenre(GenreDTO genreDTO) throws AlreadyExistsException {
         if (genreRepository.findByName(genreDTO.getName()) != null) {
-//            throw new AlreadyExistsException("Genre with this name already exists"); // uncommit after merging authors
-            throw new Exception("Genre with this name already exists");
+            throw new AlreadyExistsException("Genre with this name already exists");
         }
         return response(genreRepository.save(genreMapper.genreDtoToGenre(genreDTO)), "Successfully added genre");
     }

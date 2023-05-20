@@ -5,6 +5,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import pw.bookaholic.matching.Matching;
 import pw.bookaholic.matching.MatchingRepository;
 
 import java.util.List;
@@ -37,15 +38,26 @@ public class UserService {
     }
 
     public User getMatchUser(UUID id){
-        List<UUID> userIdsToMatch = matchingRepository.findFirstUserIds(id);
-        userIdsToMatch.addAll(matchingRepository.findSecondUserIds(id));
-        List<UUID> userIds = userRepository.findUserIds();
-
+        System.out.println("Get by first user");
+        List<UUID> userIdsToMatch = new java.util.ArrayList<>(matchingRepository.findFirstUserIds(id).stream().map(m -> m.getFirstUser().getId()).toList());
+        System.out.println("Get by second user");
+        userIdsToMatch.addAll(matchingRepository.findSecondUserIds(id).stream().map(m -> m.getSecondUser().getId()).toList());
+        System.out.println("Get all users");
+        List<UUID> userIds = new java.util.ArrayList<>(userRepository.findAll().stream().map(User::getId).toList());
+        System.out.println("Remove all users from match");
+        userIds.forEach(System.out::println);
+        System.out.println("-----");
+        userIdsToMatch.add(id);
+        userIdsToMatch.forEach(System.out::println);
         userIds.removeAll(userIdsToMatch);
+        System.out.println("=====");
+        userIds.forEach(System.out::println);
         if (userIds.size() == 0)
             return null;
         // get a random UUID from userIds
-        UUID randomUserId = userIds.get((int) (Math.random() % userIds.size()));
+        System.out.println("Get random user:");
+        UUID randomUserId = userIds.get((int) (Math.random() * userIds.size()));
+        System.out.println(randomUserId);
         return userRepository.findById(randomUserId).orElse(null);
     }
 

@@ -11,26 +11,26 @@ import java.util.UUID;
 @Repository
 public interface MatchingRepository extends JpaRepository<Matching, UUID> {
     @Query(
-            value = "select * from matching where first_user_id = ?1 and first_user_liked is null and second_user_liked = true limit 1",
+            value = "select * from matching where first_user_id = ?1 and first_user_liked is null and second_user_liked is not false",
             nativeQuery = true
     )
-    Optional<Matching> findByFirstUser(UUID userId);
+    List<Matching> findByFirstUser(UUID userId);
 
     @Query(
-            value = "select * from matching where second_user_id = ?1 and first_user_liked = true and second_user_liked is null limit 1",
+            value = "select * from matching where second_user_id = ?1 and first_user_liked is not false and second_user_liked is null",
             nativeQuery = true
     )
-    Optional<Matching> findBySecondUser(UUID userId);
+    List<Matching> findBySecondUser(UUID userId);
 
     @Query(
-            value = "select first_user_id from matching where second_user_id = ?1",
+            value = "select * from matching where second_user_id = ?1",
             nativeQuery = true
     )
-    List<UUID> findFirstUserIds(UUID userId);
+    List<Matching> findFirstUserIds(UUID userId);
 
     @Query(
-            value = "select second_user_id from matching where first_user_id = ?1",
+            value = "select * from matching where first_user_id = ?1",
             nativeQuery = true
     )
-    List<UUID> findSecondUserIds(UUID userId);
+    List<Matching> findSecondUserIds(UUID userId);
 }
