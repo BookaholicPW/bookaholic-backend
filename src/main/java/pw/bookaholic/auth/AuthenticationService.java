@@ -56,6 +56,7 @@ public class AuthenticationService {
                 LocalDateTime.now().plusMinutes(20),
                 savedUser
         );
+        verificationToken.setId(UUID.randomUUID());
         verificationService.saveVerificationToken(verificationToken);
 
         String link = "https://api.bookaholic.pl/account/verify?token=" +token;

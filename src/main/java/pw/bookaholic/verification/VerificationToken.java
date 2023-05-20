@@ -7,6 +7,7 @@ import lombok.Setter;
 import pw.bookaholic.user.User;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Getter
@@ -15,9 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 public class VerificationToken {
 
-    // sequence
     @Id
-    private Long id;
+    private UUID id;
     @Column(nullable=false)
     private String token;
     @Column(nullable=false)
