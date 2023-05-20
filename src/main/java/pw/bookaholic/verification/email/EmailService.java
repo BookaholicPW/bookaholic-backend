@@ -20,6 +20,7 @@ public class EmailService implements EmailSender{
         try{
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+            helper.setFrom("noreply@bookaholic.pl");
             helper.setText(emailBody(link), true);
             helper.setTo(to);
             helper.setSubject("Account Confirmation.");
