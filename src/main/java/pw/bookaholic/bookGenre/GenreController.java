@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pw.bookaholic.exceptions.AlreadyExistsException;
 
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class GenreController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> postGenre(@RequestBody GenreDTO genreDTO) throws Exception {
+    public ResponseEntity<Object> postGenre(@RequestBody GenreDTO genreDTO) throws AlreadyExistsException {
         return ResponseEntity.ok().body(genreService.addNewGenre(genreDTO));
     }
 

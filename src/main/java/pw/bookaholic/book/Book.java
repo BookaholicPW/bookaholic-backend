@@ -1,5 +1,6 @@
 package pw.bookaholic.book;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -23,25 +24,25 @@ public class Book {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @NotNull
     private String title;
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "book_author",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="author_id")
+    private Author author;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    @JsonIgnore
     private Set<Genre> genres = new HashSet<>();
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnore
     private Set<BookCharacter> characters = new HashSet<>();
 
     private String cover;
