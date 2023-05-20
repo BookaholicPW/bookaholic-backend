@@ -19,13 +19,12 @@ import java.util.UUID;
 @Setter
 @Getter
 public class Genre {
+    @NotNull
+    String name;
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id = UUID.randomUUID();
-    @NotNull
-    String name;
-
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.MERGE
@@ -33,7 +32,4 @@ public class Genre {
             mappedBy = "genres")
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
-
-
-
 }

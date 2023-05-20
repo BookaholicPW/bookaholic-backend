@@ -1,13 +1,13 @@
 package pw.bookaholic.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pw.bookaholic.author.Author;
+import pw.bookaholic.book.Book;
+import pw.bookaholic.bookGenre.Genre;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -27,11 +27,18 @@ public class User implements UserDetails {
     @NotNull
     private String password;
     private String name;
+    @Column(unique = true)
     private String username_;
     private String avatar;
     private String bio;
     private Long createdAt;
     private Long updatedAt;
+//    @OneToMany(fetch = FetchType.EAGER)
+//    private Collection<Book> books;
+//    @OneToMany(fetch = FetchType.EAGER)
+//    private Collection<Author> authors;
+//    @OneToMany(fetch = FetchType.EAGER)
+//    private Collection<Genre> genres;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
