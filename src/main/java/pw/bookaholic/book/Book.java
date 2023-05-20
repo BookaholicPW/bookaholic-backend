@@ -24,7 +24,7 @@ public class Book {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @NotNull
     private String title;
