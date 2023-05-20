@@ -3,9 +3,9 @@ package pw.bookaholic.bookCharacter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import pw.bookaholic.book.Book;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import pw.bookaholic.book.Book;
 
 import java.util.UUID;
 

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import pw.bookaholic.book.Book;
 
 import java.util.HashSet;
@@ -22,18 +24,15 @@ public class Author {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id = UUID.randomUUID();
+    private UUID id;
     @NotNull
     private String name;
     private String avatar;
     private Long born;
     private Long died;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.MERGE
-            },
-            mappedBy = "authors")
+    @OneToMany(mappedBy = "author")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
