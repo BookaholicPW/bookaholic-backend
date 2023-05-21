@@ -56,4 +56,23 @@ public class MatchingService {
         Matching newMatch = new Matching(UUID.randomUUID(), findUserByEmail, randomUser, null, null);
         return response(convertEntityToBase(matchingRepository.save(newMatch)), "Suggested profile found!");
     }
+
+    public Object answerSuggestedProfile(HttpHeaders headers, MatchingBaseRequest matchingBaseRequest) {
+        String email = getEmailFromToken(headers);
+        User findUserByEmail = userRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new IllegalStateException("User not found!"));
+        Matching matching = matchingRepository
+                .findById(matchingBaseRequest.getId())
+                .orElseThrow(() ->
+                        new IllegalStateException("Matching not found!"));
+        matching.setFirstUserLiked(matchingBaseRequest.getFirstUserLiked());
+        matching.setSecondUserLiked(matchingBaseRequest.getSecondUserLiked());
+        matchingRepository.save(matching);
+        if (matchingBaseRequest.getFirstUserLiked() && matchingBaseRequest.getSecondUserLiked()) {
+            return response(null, "Matched!");
+        }
+        return response(null, "Matched!");
+    }
 }
