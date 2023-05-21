@@ -70,11 +70,23 @@ public class MatchingService {
                         new NoResultException("Matching not found!"));
         if (!(matching.getFirstUser().getId().equals(findUserByEmail.getId()) || matching.getSecondUser().getId().equals(findUserByEmail.getId())))
             throw new IllegalStateException("User are not permitted to answer this matching!");
-        matching.setFirstUserLiked(matchingBaseRequest.getFirstUserLiked());
-        matching.setSecondUserLiked(matchingBaseRequest.getSecondUserLiked());
+        if (matchingBaseRequest.getAnswer().equals("like")) {
+            if (matching.getFirstUser().getId().equals(findUserByEmail.getId()))
+                matching.setFirstUserLiked(true);
+            else
+                matching.setSecondUserLiked(true);
+        }
+        else if (matchingBaseRequest.getAnswer().equals("dislike")) {
+            if (matching.getFirstUser().getId().equals(findUserByEmail.getId()))
+                matching.setFirstUserLiked(false);
+            else
+                matching.setSecondUserLiked(false);
+        }
+        else
+            throw new RuntimeException("Answer is not valid!");
         matchingRepository.save(matching);
         Map<String, Boolean> result = new HashMap<>();
-        if (matchingBaseRequest.getFirstUserLiked() == Boolean.TRUE && matchingBaseRequest.getSecondUserLiked() == Boolean.TRUE) {
+        if (matching.getFirstUserLiked() == Boolean.TRUE && matching.getSecondUserLiked() == Boolean.TRUE) {
             result.put("matched", Boolean.TRUE);
             return response(result, "Matched!");
         }
