@@ -33,7 +33,4 @@ public class Genre {
             mappedBy = "genres")
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
-
-
-
 }

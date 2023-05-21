@@ -1,5 +1,6 @@
 package pw.bookaholic.bookCharacter;
 
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class BookCharacterService {
 
     public ResponseEntity<Void> editBookCharacterName(BookCharacterDTO editedChar){
         Optional<BookCharacter> optBookChar = bookCharacterRepo.findById(editedChar.getId());
-        if(optBookChar != null){
+        if(optBookChar.isPresent()){
             return ResponseEntity.badRequest().build();
         }
         BookCharacter bookCharacter = optBookChar.get();
@@ -39,8 +40,8 @@ public class BookCharacterService {
 
     public BookCharacterDTO getBookCharByName(String name){
         Optional<BookCharacter> optBookChar = bookCharacterRepo.findByName(name);
-        if(optBookChar != null){
-            throw new IllegalStateException("Book Character not found!");
+        if(optBookChar.isPresent()){
+            throw new NoResultException("Book Character not found!");
         }
         BookCharacter bookCharacter = optBookChar.get();
         return bookCharacterMapper.bookCharToBookCharDto(bookCharacter);
