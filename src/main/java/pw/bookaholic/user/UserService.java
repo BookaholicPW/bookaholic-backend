@@ -1,5 +1,6 @@
 package pw.bookaholic.user;
 
+import jakarta.persistence.NoResultException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,7 @@ import pw.bookaholic.bookGenre.Genre;
 import pw.bookaholic.bookGenre.GenreRepository;
 import pw.bookaholic.matching.MatchingRepository;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static pw.bookaholic.config.ApplicationConfig.modelMapper;
 import static pw.bookaholic.config.JwtService.extractUserEmail;
@@ -58,7 +56,7 @@ public class UserService {
             return null;
         // get a random UUID from userIds
 //        UUID randomUserId = userIds.get((int) (Math.random() * userIds.size()));
-        User baseUser = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User not found!"));
+        User baseUser = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found!"));
         List<UUID> baseBooks = baseUser.getBooks().stream().map(Book::getId).toList();
         List<UUID> baseAuthors = baseUser.getAuthors().stream().map(Author::getId).toList();
         List<UUID> baseGenres = baseUser.getGenres().stream().map(Genre::getId).toList();
@@ -100,11 +98,11 @@ public class UserService {
         String email = getEmailFromToken(headers);
         Optional<User> findUserByEmail = userRepository.findByEmail(email);
         if (findUserByEmail.isEmpty())
-            throw new IllegalStateException("User not found!");
+            throw new NoSuchElementException("User not found!");
         User userToUpdate = findUserByEmail.get();
         userToUpdate.setName(user.getName());
         if (userRepository.existsByUsername_(user.getUsername(), userToUpdate.getId()))
-            throw new IllegalStateException("Username already exists!");
+            throw new RuntimeException("Username already exists!");
         userToUpdate.setUsername_(user.getUsername());
         userToUpdate.setBio(user.getBio());
         userToUpdate.setAvatar(user.getAvatar());
@@ -129,7 +127,7 @@ public class UserService {
         String email = getEmailFromToken(headers);
         Optional<User> findUserByEmail = userRepository.findByEmail(email);
         if (findUserByEmail.isEmpty())
-            throw new IllegalStateException("User not found!");
+            throw new NoResultException("User not found!");
         return response(convertEntityToBase(findUserByEmail.get()), "Successfully get user info");
     }
 }

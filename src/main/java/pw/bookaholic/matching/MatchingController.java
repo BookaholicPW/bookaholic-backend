@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pw.bookaholic.exceptions.AlreadyExistsException;
 
 @AllArgsConstructor
 @RestController
@@ -21,7 +22,7 @@ public class MatchingController {
     }
 
     @PostMapping("/answer")
-    public ResponseEntity<Object> answerSuggestedProfile(@RequestHeader HttpHeaders headers, @RequestBody MatchingBaseRequest matchingBaseRequest) {
+    public ResponseEntity<Object> answerSuggestedProfile(@RequestHeader HttpHeaders headers, @RequestBody MatchingBaseRequest matchingBaseRequest) throws AlreadyExistsException {
         return ResponseEntity.ok().body(matchingService.answerSuggestedProfile(headers, matchingBaseRequest));
     }
 }
