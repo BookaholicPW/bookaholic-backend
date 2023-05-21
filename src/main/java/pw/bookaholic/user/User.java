@@ -34,11 +34,11 @@ public class  User implements UserDetails {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Book> books;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Author> authors;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Genre> genres;
 
     @Override

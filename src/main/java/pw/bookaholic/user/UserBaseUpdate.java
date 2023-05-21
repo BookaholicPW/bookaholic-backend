@@ -3,12 +3,9 @@ package pw.bookaholic.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pw.bookaholic.author.AuthorId;
-import pw.bookaholic.book.BookId;
-import pw.bookaholic.bookGenre.GenreId;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +15,7 @@ public class UserBaseUpdate {
     private String username;
     private String avatar;
     private String bio;
-    private List<BookId> books;
-    private List<AuthorId> authors;
-    private List<GenreId> genres;
+    private List<UUID> books;
+    private List<UUID> authors;
+    private List<UUID> genres;
 }
