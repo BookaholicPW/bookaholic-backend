@@ -11,6 +11,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MatchingBaseRequest {
     private UUID id;
-    private Boolean firstUserLiked;
-    private Boolean secondUserLiked;
+    private String answer;
 }
