@@ -15,7 +15,7 @@ public interface MatchingRepository extends JpaRepository<Matching, UUID> {
                     select * from matching
                     where first_user_id = ?1 and
                     first_user_liked is null and
-                    (second_user_liked is null or second_user_liked = false)
+                    (second_user_liked is null or second_user_liked = 1)
                     order by RAND()
                     limit 1
                     """,
@@ -28,7 +28,7 @@ public interface MatchingRepository extends JpaRepository<Matching, UUID> {
                     select * from matching
                     where second_user_id = ?1 and
                     second_user_liked is null and
-                    (first_user_liked is null or first_user_liked = false)
+                    (first_user_liked is null or first_user_liked = 1)
                     order by RAND()
                     limit 1
                     """,

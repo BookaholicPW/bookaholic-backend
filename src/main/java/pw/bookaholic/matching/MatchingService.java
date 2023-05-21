@@ -1,8 +1,10 @@
 package pw.bookaholic.matching;
 
+import jakarta.persistence.NoResultException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import pw.bookaholic.user.User;
@@ -10,9 +12,7 @@ import pw.bookaholic.user.UserBaseResponse;
 import pw.bookaholic.user.UserRepository;
 import pw.bookaholic.user.UserService;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static pw.bookaholic.config.ApplicationConfig.modelMapper;
 import static pw.bookaholic.user.UserService.getEmailFromToken;
@@ -41,19 +41,44 @@ public class MatchingService {
         User findUserByEmail = userRepository
                 .findByEmail(email)
                 .orElseThrow(() ->
-                        new IllegalStateException("User not found!"));
+                        new NoSuchElementException("User not found!"));
         Optional<Matching> matchFirst = matchingRepository
                 .findByFirstUser(findUserByEmail.getId());
         Optional<Matching> matchSecond = matchingRepository
                 .findBySecondUser(findUserByEmail.getId());
         if (matchFirst.isPresent())
             return response(convertEntityToBase(matchFirst.get()), "Suggested profile found!");
-        if (matchSecond.isPresent())
+        if (matchSecond.isPresent()) {
             return response(convertEntityToBase(matchSecond.get()), "Suggested profile found!");
+        }
         User randomUser = userService.getMatchUser(findUserByEmail.getId());
         if (randomUser == null)
-            throw new IllegalStateException("No more users to match!");
+            throw new NoResultException("No more users to match!");
         Matching newMatch = new Matching(UUID.randomUUID(), findUserByEmail, randomUser, null, null);
         return response(convertEntityToBase(matchingRepository.save(newMatch)), "Suggested profile found!");
+    }
+
+    public Object answerSuggestedProfile(HttpHeaders headers, MatchingBaseRequest matchingBaseRequest) {
+        String email = getEmailFromToken(headers);
+        User findUserByEmail = userRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new NoResultException("User not found!"));
+        Matching matching = matchingRepository
+                .findById(matchingBaseRequest.getId())
+                .orElseThrow(() ->
+                        new NoResultException("Matching not found!"));
+        if (!(matching.getFirstUser().getId().equals(findUserByEmail.getId()) || matching.getSecondUser().getId().equals(findUserByEmail.getId())))
+            throw new IllegalStateException("User are not permitted to answer this matching!");
+        matching.setFirstUserLiked(matchingBaseRequest.getFirstUserLiked());
+        matching.setSecondUserLiked(matchingBaseRequest.getSecondUserLiked());
+        matchingRepository.save(matching);
+        Map<String, Boolean> result = new HashMap<>();
+        if (matchingBaseRequest.getFirstUserLiked() == Boolean.TRUE && matchingBaseRequest.getSecondUserLiked() == Boolean.TRUE) {
+            result.put("matched", Boolean.TRUE);
+            return response(result, "Matched!");
+        }
+        result.put("matched", Boolean.FALSE);
+        return response(result, "Not matched!");
     }
 }

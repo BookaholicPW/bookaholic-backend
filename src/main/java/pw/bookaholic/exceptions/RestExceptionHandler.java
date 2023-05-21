@@ -1,5 +1,6 @@
 package pw.bookaholic.exceptions;
 
+import jakarta.persistence.NoResultException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -29,6 +30,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public Map<String, Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception) {
         return responseException(exception);
     }
+
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoResultException.class)
+    public Map<String, Object> handleNoResult(NoResultException exception) {
+        return responseException(exception);
+    }
+
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(IllegalStateException.class)
