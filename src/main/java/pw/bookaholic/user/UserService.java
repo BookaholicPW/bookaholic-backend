@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import pw.bookaholic.author.Author;
+import pw.bookaholic.author.AuthorRepository;
 import pw.bookaholic.book.Book;
+import pw.bookaholic.book.BookRepository;
 import pw.bookaholic.bookGenre.Genre;
+import pw.bookaholic.bookGenre.GenreRepository;
 import pw.bookaholic.matching.MatchingRepository;
 
 import java.util.List;
@@ -26,6 +29,12 @@ public class UserService {
     private final UserRepository userRepository;
     @Autowired
     private final MatchingRepository matchingRepository;
+    @Autowired
+    private final BookRepository bookRepository;
+    @Autowired
+    private final AuthorRepository authorRepository;
+    @Autowired
+    private final GenreRepository genreRepository;
 
     public static UserBaseResponse convertEntityToBase(User user) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
@@ -84,7 +93,7 @@ public class UserService {
                 return 0;
             return score > 0 ? -1 : 1;
         });
-        return targetUsers.get(targetUsers.size()-1);
+        return targetUsers.get(0);
     }
 
     public Object updateUser(HttpHeaders headers, UserBaseUpdate user) {
@@ -94,12 +103,24 @@ public class UserService {
             throw new IllegalStateException("User not found!");
         User userToUpdate = findUserByEmail.get();
         userToUpdate.setName(user.getName());
+        if (userRepository.existsByUsername_(user.getUsername(), userToUpdate.getId()))
+            throw new IllegalStateException("Username already exists!");
         userToUpdate.setUsername_(user.getUsername());
         userToUpdate.setBio(user.getBio());
         userToUpdate.setAvatar(user.getAvatar());
-//        userToUpdate.setBooks();
+        if (user.getBooks() != null) {
+            List<Book> books = bookRepository.findAllById(user.getBooks());
+            userToUpdate.setBooks(books);
+        }
+        if (user.getAuthors() != null) {
+            List<Author> authors = authorRepository.findAllById(user.getAuthors());
+            userToUpdate.setAuthors(authors);
+        }
+        if (user.getGenres() != null) {
+            List<Genre> genres = genreRepository.findAllById(user.getGenres());
+            userToUpdate.setGenres(genres);
+        }
         userToUpdate.setUpdatedAt(System.currentTimeMillis());
-        // favoritebook, favoriteauthor, favoritegenre
         User savedUser = userRepository.save(userToUpdate);
         return response(convertEntityToBase(savedUser), "Successfully updated user info");
     }
