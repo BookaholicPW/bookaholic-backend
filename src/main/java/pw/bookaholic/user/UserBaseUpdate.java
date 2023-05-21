@@ -8,6 +8,7 @@ import pw.bookaholic.book.BookId;
 import pw.bookaholic.bookGenre.GenreId;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +18,7 @@ public class UserBaseUpdate {
     private String username;
     private String avatar;
     private String bio;
-    private Collection<BookId> books;
-    private Collection<AuthorId> authors;
-    private Collection<GenreId> genres;
+    private List<BookId> books;
+    private List<AuthorId> authors;
+    private List<GenreId> genres;
 }

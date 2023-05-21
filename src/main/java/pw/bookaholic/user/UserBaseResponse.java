@@ -7,7 +7,7 @@ import pw.bookaholic.author.AuthorMin;
 import pw.bookaholic.book.BookMin;
 import pw.bookaholic.bookGenre.GenreMin;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -22,7 +22,7 @@ public class UserBaseResponse {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
-    private Collection<BookMin> books;
-    private Collection<AuthorMin> authors;
-    private Collection<GenreMin> genres;
+    private List<BookMin> books;
+    private List<AuthorMin> authors;
+    private List<GenreMin> genres;
 }

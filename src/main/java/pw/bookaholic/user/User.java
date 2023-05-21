@@ -10,6 +10,7 @@ import pw.bookaholic.book.Book;
 import pw.bookaholic.bookGenre.Genre;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -19,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User implements UserDetails {
+public class  User implements UserDetails {
     @Id
     private UUID id;
     @NotNull
@@ -33,12 +34,12 @@ public class User implements UserDetails {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
-//    @OneToMany(fetch = FetchType.EAGER)
-//    private Collection<Book> books;
-//    @OneToMany(fetch = FetchType.EAGER)
-//    private Collection<Author> authors;
-//    @OneToMany(fetch = FetchType.EAGER)
-//    private Collection<Genre> genres;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Book> books;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Author> authors;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Genre> genres;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

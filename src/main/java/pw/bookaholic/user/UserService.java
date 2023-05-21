@@ -5,7 +5,9 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-import pw.bookaholic.matching.Matching;
+import pw.bookaholic.author.Author;
+import pw.bookaholic.book.Book;
+import pw.bookaholic.bookGenre.Genre;
 import pw.bookaholic.matching.MatchingRepository;
 
 import java.util.List;
@@ -37,28 +39,52 @@ public class UserService {
         return extractUserEmail(token);
     }
 
-    public User getMatchUser(UUID id){
-        System.out.println("Get by first user");
+    public User getMatchUser(UUID id) {
         List<UUID> userIdsToMatch = new java.util.ArrayList<>(matchingRepository.findFirstUserIds(id).stream().map(m -> m.getFirstUser().getId()).toList());
-        System.out.println("Get by second user");
         userIdsToMatch.addAll(matchingRepository.findSecondUserIds(id).stream().map(m -> m.getSecondUser().getId()).toList());
-        System.out.println("Get all users");
         List<UUID> userIds = new java.util.ArrayList<>(userRepository.findAll().stream().map(User::getId).toList());
-        System.out.println("Remove all users from match");
-        userIds.forEach(System.out::println);
-        System.out.println("-----");
         userIdsToMatch.add(id);
-        userIdsToMatch.forEach(System.out::println);
         userIds.removeAll(userIdsToMatch);
-        System.out.println("=====");
-        userIds.forEach(System.out::println);
         if (userIds.size() == 0)
             return null;
         // get a random UUID from userIds
-        System.out.println("Get random user:");
-        UUID randomUserId = userIds.get((int) (Math.random() * userIds.size()));
-        System.out.println(randomUserId);
-        return userRepository.findById(randomUserId).orElse(null);
+//        UUID randomUserId = userIds.get((int) (Math.random() * userIds.size()));
+        User baseUser = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User not found!"));
+        List<UUID> baseBooks = baseUser.getBooks().stream().map(Book::getId).toList();
+        List<UUID> baseAuthors = baseUser.getAuthors().stream().map(Author::getId).toList();
+        List<UUID> baseGenres = baseUser.getGenres().stream().map(Genre::getId).toList();
+        List<User> targetUsers = userRepository.findAllById(userIds);
+        targetUsers.sort((o1, o2) -> {
+            List<UUID> books1 = o1.getBooks().stream().map(Book::getId).toList();
+            List<UUID> books2 = o2.getBooks().stream().map(Book::getId).toList();
+            List<UUID> authors1 = o1.getAuthors().stream().map(Author::getId).toList();
+            List<UUID> authors2 = o2.getAuthors().stream().map(Author::getId).toList();
+            List<UUID> genres1 = o1.getGenres().stream().map(Genre::getId).toList();
+            List<UUID> genres2 = o2.getGenres().stream().map(Genre::getId).toList();
+            int score = 0;
+            for (UUID book : baseBooks) {
+                if (books1.contains(book))
+                    score++;
+                if (books2.contains(book))
+                    score--;
+            }
+            for (UUID author : baseAuthors) {
+                if (authors1.contains(author))
+                    score++;
+                if (authors2.contains(author))
+                    score--;
+            }
+            for (UUID genre : baseGenres) {
+                if (genres1.contains(genre))
+                    score++;
+                if (genres2.contains(genre))
+                    score--;
+            }
+            if (score == 0)
+                return 0;
+            return score > 0 ? -1 : 1;
+        });
+        return targetUsers.get(targetUsers.size()-1);
     }
 
     public Object updateUser(HttpHeaders headers, UserBaseUpdate user) {
