@@ -22,6 +22,9 @@ public class UserBaseResponse {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
+
+    private boolean verified;
+
     private List<BookMin> books;
     private List<AuthorMin> authors;
     private List<GenreMin> genres;

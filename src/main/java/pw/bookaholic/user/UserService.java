@@ -130,4 +130,8 @@ public class UserService {
             throw new NoResultException("User not found!");
         return response(convertEntityToBase(findUserByEmail.get()), "Successfully get user info");
     }
+
+    public void verifyUser(String email) {
+        userRepository.verifyUser(email);
+    }
 }

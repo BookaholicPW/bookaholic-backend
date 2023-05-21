@@ -1,5 +1,6 @@
 package pw.bookaholic.auth;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,7 +9,13 @@ import org.springframework.stereotype.Service;
 import pw.bookaholic.config.JwtService;
 import pw.bookaholic.user.User;
 import pw.bookaholic.user.UserRepository;
+import pw.bookaholic.user.UserService;
+import pw.bookaholic.verification.VerificationService;
+import pw.bookaholic.verification.VerificationToken;
+import pw.bookaholic.verification.email.EmailSender;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static pw.bookaholic.user.UserService.convertEntityToBase;
@@ -21,6 +28,10 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private final VerificationService verificationService;
+    private final UserService userService;
+    private final EmailSender emailSender;
 
     public Object register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail()))
@@ -37,6 +48,20 @@ public class AuthenticationService {
         user.setUpdatedAt(System.currentTimeMillis());
         user.setId(UUID.randomUUID());
         User savedUser = userRepository.save(user);
+
+        String token = UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(20),
+                savedUser
+        );
+        verificationToken.setId(UUID.randomUUID());
+        verificationService.saveVerificationToken(verificationToken);
+
+        String link = "https://api.bookaholic.pl/account/verify?token=" +token;
+        emailSender.send(request.getEmail(), link);
+
         return response(convertEntityToBase(savedUser), "Successfully registered");
     }
 
@@ -57,4 +82,34 @@ public class AuthenticationService {
 //                .token(jwtToken)
 //                .build();
     }
+
+    @Transactional
+    public boolean confirmVerificationToken(String token){
+        Optional<VerificationToken> verTokenOpt = verificationService
+                .getToken(token);
+
+        if(verTokenOpt.isEmpty()){
+            return false;
+        }
+
+        VerificationToken verToken = verTokenOpt.get();
+
+        if(verToken.getConfirmedAt() != null){
+            throw new IllegalStateException("Email already verified");
+        }
+
+        LocalDateTime expires = verToken.getExpiresAt();
+
+        if(expires.isBefore(LocalDateTime.now())){
+            return false;
+        }
+
+        verificationService.setConfirmedAt(verToken);
+
+        userService.verifyUser(verToken.getUser().getEmail());
+
+        return true;
+
+    }
+
 }

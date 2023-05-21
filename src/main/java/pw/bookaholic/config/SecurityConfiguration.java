@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/account/register",
+                        "/account/verify**",
                         "/account/login",
                         "/swagger-ui/**",
                         "/v3/api-docs/**")
