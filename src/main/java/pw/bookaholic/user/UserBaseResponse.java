@@ -3,7 +3,11 @@ package pw.bookaholic.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pw.bookaholic.author.AuthorMin;
+import pw.bookaholic.book.BookMin;
+import pw.bookaholic.bookGenre.GenreMin;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -18,4 +22,7 @@ public class UserBaseResponse {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
+    private List<BookMin> books;
+    private List<AuthorMin> authors;
+    private List<GenreMin> genres;
 }
