@@ -25,7 +25,7 @@ public class UserBaseResponse {
 
     private boolean verified;
 
-    private List<BookMin> books;
-    private List<AuthorMin> authors;
-    private List<GenreMin> genres;
+    private List<BookMin> favoriteBooks;
+    private List<AuthorMin> favoriteAuthors;
+    private List<GenreMin> favoriteGenres;
 }

@@ -2,24 +2,6 @@
 
 --changeset Daria:1
 
-
-
---
--- Table structure for table `users`
---
-CREATE TABLE IF NOT EXISTS `users` (
-                         `id` binary(16) NOT NULL,
-                         `avatar` varchar(255) DEFAULT NULL,
-                         `bio` varchar(255) DEFAULT NULL,
-                         `created_at` bigint DEFAULT NULL,
-                         `email` varchar(255) NOT NULL,
-                         `name` varchar(255) DEFAULT NULL,
-                         `password` varchar(255) NOT NULL,
-                         `updated_at` bigint DEFAULT NULL,
-                         `username_` varchar(255) DEFAULT NULL,
-                         PRIMARY KEY (`id`)
-);
-
 --
 -- Table structure for table `author`
 --

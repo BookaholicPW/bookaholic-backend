@@ -15,7 +15,7 @@ public class UserBaseUpdate {
     private String username;
     private String avatar;
     private String bio;
-    private List<UUID> books;
-    private List<UUID> authors;
-    private List<UUID> genres;
+    private List<UUID> favoriteBooks;
+    private List<UUID> favoriteAuthors;
+    private List<UUID> favoriteGenres;
 }
