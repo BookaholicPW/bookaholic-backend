@@ -24,10 +24,10 @@ import java.util.UUID;
 @Setter
 public class Book {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.BINARY)
-    @Column(length = 16, columnDefinition = "binary(16)", updatable = false, nullable = false)
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+//    @JdbcTypeCode(SqlTypes.BINARY)
+//    @Column(length = 16, columnDefinition = "binary(16)", updatable = false, nullable = false)
     private UUID id;
 
     @NotNull

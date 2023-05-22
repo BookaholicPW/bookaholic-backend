@@ -36,7 +36,7 @@ public class AuthenticationService {
     public Object register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail()))
             throw new RuntimeException("Email already exists");
-        if (!request.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
+        if (!request.getEmail().matches("^[\\w-.+]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
             throw new RuntimeException("Invalid email");
         if (!(request.getPassword().length() >= 8))
             throw new RuntimeException("Password must be at least 8 characters");
@@ -47,6 +47,7 @@ public class AuthenticationService {
         user.setCreatedAt(System.currentTimeMillis());
         user.setUpdatedAt(System.currentTimeMillis());
         user.setId(UUID.randomUUID());
+        user.setVerified(false);
         User savedUser = userRepository.save(user);
 
         String token = UUID.randomUUID().toString();
@@ -62,7 +63,7 @@ public class AuthenticationService {
         String link = "https://api.bookaholic.pl/account/verify?token=" +token;
         emailSender.send(request.getEmail(), link);
 
-        return response(convertEntityToBase(savedUser), "Successfully registered");
+        return response(convertEntityToBase(savedUser), "Successfully registered, please check your email for verification link");
     }
 
     public Object authenticate(AuthenticationRequest request) {
@@ -78,9 +79,6 @@ public class AuthenticationService {
         return response(AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build(), "Successfully authenticated");
-//        return AuthenticationResponse.builder()
-//                .token(jwtToken)
-//                .build();
     }
 
     @Transactional

@@ -35,40 +35,16 @@ public class User implements UserDetails {
     private Long createdAt;
     private Long updatedAt;
     @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_book")
-    private List<Book> books;
+    @JoinTable(name = "users_books")
+    private List<Book> favoriteBooks;
     @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_author")
-    private List<Author> authors;
+    @JoinTable(name = "users_authors")
+    private List<Author> favoriteAuthors;
     @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_genre")
-    private List<Genre> genres;
+    @JoinTable(name = "users_genres")
+    private List<Genre> favoriteGenres;
 
-    public List<Book> getFavoriteBooks() {
-        return books;
-    }
-
-    public List<Author> getFavoriteAuthors() {
-        return authors;
-    }
-
-    public List<Genre> getFavoriteGenres() {
-        return genres;
-    }
-
-    public void setFavoriteBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public void setFavoriteAuthors(List<Author> authors) {
-        this.authors = authors;
-    }
-
-    public void setFavoriteGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
-
-    private boolean verified = false;
+    private boolean verified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
