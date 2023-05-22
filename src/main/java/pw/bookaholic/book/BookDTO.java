@@ -1,10 +1,7 @@
 package pw.bookaholic.book;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pw.bookaholic.author.Author;
 import java.util.HashSet;
 
@@ -20,6 +17,10 @@ import java.util.UUID;
 
 @Builder
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDTO {
     private UUID id;
     @NotNull
@@ -28,7 +29,7 @@ public class BookDTO {
     private String cover;
     private Integer pages;
     private Long published;
-    private Author author;
-    private Set<Genre> genres;
-    private Set<BookCharacter> characters;
+    private AuthorDTO author;
+    private Set<GenreDTO> genres;
+    private Set<BookCharacterDTO> characters;
 }

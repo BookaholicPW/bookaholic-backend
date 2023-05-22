@@ -31,4 +31,9 @@ public class GenreController {
         return ResponseEntity.ok().body(genreService.addNewGenre(genreDTO));
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<Object> findGenres(@RequestParam("name") String name) {
+        return ResponseEntity.ok().body(genreService.getGenresByName(name));
+    }
+
 }

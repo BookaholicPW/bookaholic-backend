@@ -22,7 +22,10 @@ public class UserBaseResponse {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
-    private List<BookMin> books;
-    private List<AuthorMin> authors;
-    private List<GenreMin> genres;
+
+    private boolean verified;
+
+    private List<BookMin> favoriteBooks;
+    private List<AuthorMin> favoriteAuthors;
+    private List<GenreMin> favoriteGenres;
 }

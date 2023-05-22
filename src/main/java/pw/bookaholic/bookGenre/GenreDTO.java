@@ -11,6 +11,10 @@ import java.util.UUID;
 
 @Data
 @Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class GenreDTO {
     private UUID id;
     @NotNull

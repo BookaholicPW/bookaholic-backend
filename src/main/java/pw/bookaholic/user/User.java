@@ -20,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class  User implements UserDetails {
+public class User implements UserDetails {
     @Id
     private UUID id;
     @NotNull
@@ -35,11 +35,16 @@ public class  User implements UserDetails {
     private Long createdAt;
     private Long updatedAt;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Book> books;
+    @JoinTable(name = "users_books")
+    private List<Book> favoriteBooks;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Author> authors;
+    @JoinTable(name = "users_authors")
+    private List<Author> favoriteAuthors;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Genre> genres;
+    @JoinTable(name = "users_genres")
+    private List<Genre> favoriteGenres;
+
+    private boolean verified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,6 +73,6 @@ public class  User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return verified;
     }
 }
