@@ -16,11 +16,32 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, UUID> 
 
     @Query(
             value = """
-                    select * from chatmessage
+                    select * from chat_message
                     where (first_user_id = ?1 and second_user_id = ?2)
                     or (first_user_id = ?2 and second_user_id = ?1)
                     """,
             nativeQuery = true
     )
     List<ChatMessage> findAllByFirstUserAndSecondUser(UUID id1, UUID id2);
+    @Query(
+            value = """
+                    select * from chat_message where chat_id = ?1
+                    and time <= (select time from chat_message where id = ?2)
+                    order by time desc
+                    limit 25
+                    """,
+            nativeQuery = true
+    )
+    List<ChatMessage> find25LatestMessage(UUID id, UUID lastMessageId);
+    @Query(
+            value = """
+                    select * from chat_message where chat_id = ?1
+                    order by time desc
+                    limit 25
+                    """,
+            nativeQuery = true
+    )
+    List<ChatMessage> find25LatestMessage(UUID id);
+
+    Optional<ChatMessage> findTopByChatIdOrderByTimeDesc(UUID id);
 }

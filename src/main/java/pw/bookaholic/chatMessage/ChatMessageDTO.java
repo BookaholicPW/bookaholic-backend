@@ -14,11 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatMessageDTO {
-
     private UUID id;
-    private Date time;
-    private UserBaseResponse user;
+    private Long time;
+    private UserBaseResponse sender;
     private String content;
-    private String imageUrl;
-
+    private String type;
 }

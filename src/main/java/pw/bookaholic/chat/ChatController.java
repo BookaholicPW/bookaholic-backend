@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -21,5 +20,19 @@ public class ChatController {
     @GetMapping
     public ResponseEntity<Object> getAllChats(@RequestHeader HttpHeaders headers) {
         return ResponseEntity.ok().body(chatService.getAllChats(headers));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Object> getChat(@RequestHeader HttpHeaders headers,
+                                          @PathVariable("id") UUID id,
+                                          @RequestParam(value = "lastMessageId", required = false) UUID lastMessageId) {
+        return ResponseEntity.ok().body(chatService.getChat(headers, id, lastMessageId));
+    }
+
+    @PostMapping("{id}/messages")
+    public ResponseEntity<Object> sendMessage(@RequestHeader HttpHeaders headers,
+                                               @PathVariable("id") UUID id,
+                                               @RequestBody Message message) {
+        return ResponseEntity.ok().body(chatService.sendMessage(headers, id, message));
     }
 }

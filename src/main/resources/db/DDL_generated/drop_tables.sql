@@ -1,5 +1,9 @@
-DROP TABLE IF EXISTS `DATABASECHANGELOG`;
-DROP TABLE IF EXISTS `DATABASECHANGELOGLOCK`;
+DROP TABLE IF EXISTS `databasechangeloglock`;
+DROP TABLE IF EXISTS `databasechangelog`;
+delete from chat_message;
+delete from chat;
+DROP TABLE IF EXISTS `chat`;
+DROP TABLE IF EXISTS `chat_message`;
 DROP TABLE IF EXISTS `book_genre`;
 DROP TABLE IF EXISTS `book_character`;
 DROP TABLE IF EXISTS `users_books`;
