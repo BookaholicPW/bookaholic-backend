@@ -20,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class  User implements UserDetails {
+public class User implements UserDetails {
     @Id
     private UUID id;
     @NotNull
@@ -35,13 +35,40 @@ public class  User implements UserDetails {
     private Long createdAt;
     private Long updatedAt;
     @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "user_book")
     private List<Book> books;
     @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "user_author")
     private List<Author> authors;
     @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "user_genre")
     private List<Genre> genres;
 
-    private boolean verified=false;
+    public List<Book> getFavoriteBooks() {
+        return books;
+    }
+
+    public List<Author> getFavoriteAuthors() {
+        return authors;
+    }
+
+    public List<Genre> getFavoriteGenres() {
+        return genres;
+    }
+
+    public void setFavoriteBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public void setFavoriteAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void setFavoriteGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    private boolean verified = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

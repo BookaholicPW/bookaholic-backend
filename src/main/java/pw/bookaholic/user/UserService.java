@@ -47,9 +47,9 @@ public class UserService {
     }
 
     public User getMatchUser(UUID id) {
-        List<UUID> userIdsToMatch = new java.util.ArrayList<>(matchingRepository.findFirstUserIds(id).stream().map(m -> m.getFirstUser().getId()).toList());
+        List<UUID> userIdsToMatch = new ArrayList<>(matchingRepository.findFirstUserIds(id).stream().map(m -> m.getFirstUser().getId()).toList());
         userIdsToMatch.addAll(matchingRepository.findSecondUserIds(id).stream().map(m -> m.getSecondUser().getId()).toList());
-        List<UUID> userIds = new java.util.ArrayList<>(userRepository.findAll().stream().map(User::getId).toList());
+        List<UUID> userIds = new ArrayList<>(userRepository.findAll().stream().map(User::getId).toList());
         userIdsToMatch.add(id);
         userIds.removeAll(userIdsToMatch);
         if (userIds.size() == 0)
@@ -57,17 +57,17 @@ public class UserService {
         // get a random UUID from userIds
 //        UUID randomUserId = userIds.get((int) (Math.random() * userIds.size()));
         User baseUser = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found!"));
-        List<UUID> baseBooks = baseUser.getBooks().stream().map(Book::getId).toList();
-        List<UUID> baseAuthors = baseUser.getAuthors().stream().map(Author::getId).toList();
-        List<UUID> baseGenres = baseUser.getGenres().stream().map(Genre::getId).toList();
+        List<UUID> baseBooks = baseUser.getFavoriteBooks().stream().map(Book::getId).toList();
+        List<UUID> baseAuthors = baseUser.getFavoriteAuthors().stream().map(Author::getId).toList();
+        List<UUID> baseGenres = baseUser.getFavoriteGenres().stream().map(Genre::getId).toList();
         List<User> targetUsers = userRepository.findAllById(userIds);
         targetUsers.sort((o1, o2) -> {
-            List<UUID> books1 = o1.getBooks().stream().map(Book::getId).toList();
-            List<UUID> books2 = o2.getBooks().stream().map(Book::getId).toList();
-            List<UUID> authors1 = o1.getAuthors().stream().map(Author::getId).toList();
-            List<UUID> authors2 = o2.getAuthors().stream().map(Author::getId).toList();
-            List<UUID> genres1 = o1.getGenres().stream().map(Genre::getId).toList();
-            List<UUID> genres2 = o2.getGenres().stream().map(Genre::getId).toList();
+            List<UUID> books1 = o1.getFavoriteBooks().stream().map(Book::getId).toList();
+            List<UUID> books2 = o2.getFavoriteBooks().stream().map(Book::getId).toList();
+            List<UUID> authors1 = o1.getFavoriteAuthors().stream().map(Author::getId).toList();
+            List<UUID> authors2 = o2.getFavoriteAuthors().stream().map(Author::getId).toList();
+            List<UUID> genres1 = o1.getFavoriteGenres().stream().map(Genre::getId).toList();
+            List<UUID> genres2 = o2.getFavoriteGenres().stream().map(Genre::getId).toList();
             int score = 0;
             for (UUID book : baseBooks) {
                 if (books1.contains(book))
@@ -106,17 +106,17 @@ public class UserService {
         userToUpdate.setUsername_(user.getUsername());
         userToUpdate.setBio(user.getBio());
         userToUpdate.setAvatar(user.getAvatar());
-        if (user.getBooks() != null) {
-            List<Book> books = bookRepository.findAllById(user.getBooks());
-            userToUpdate.setBooks(books);
+        if (user.getFavoriteBooks() != null) {
+            List<Book> books = bookRepository.findAllById(user.getFavoriteBooks());
+            userToUpdate.setFavoriteBooks(books);
         }
-        if (user.getAuthors() != null) {
-            List<Author> authors = authorRepository.findAllById(user.getAuthors());
-            userToUpdate.setAuthors(authors);
+        if (user.getFavoriteAuthors() != null) {
+            List<Author> authors = authorRepository.findAllById(user.getFavoriteAuthors());
+            userToUpdate.setFavoriteAuthors(authors);
         }
-        if (user.getGenres() != null) {
-            List<Genre> genres = genreRepository.findAllById(user.getGenres());
-            userToUpdate.setGenres(genres);
+        if (user.getFavoriteGenres() != null) {
+            List<Genre> genres = genreRepository.findAllById(user.getFavoriteGenres());
+            userToUpdate.setFavoriteGenres(genres);
         }
         userToUpdate.setUpdatedAt(System.currentTimeMillis());
         User savedUser = userRepository.save(userToUpdate);
