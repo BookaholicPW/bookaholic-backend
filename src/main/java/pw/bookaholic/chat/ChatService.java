@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import pw.bookaholic.chatMessage.ChatMessage;
+import pw.bookaholic.chatMessage.ChatMessageService;
 import pw.bookaholic.user.User;
 import pw.bookaholic.user.UserRepository;
 
@@ -24,6 +25,9 @@ public class ChatService {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    private final ChatMessageService messageService;
+
     public static ChatResponse convertEntityToResponse(UUID id, User user, ChatMessage lastChatMessage, Boolean seen) {
         return new ChatResponse(
                 id,
@@ -41,7 +45,8 @@ public class ChatService {
                         new NoSuchElementException("User not found!"));
         List<Chat> chats = chatRepository.findAllByFirstUserOrSecondUser(baseUser.getId());
         List<ChatResponse> chatResponses = chats.stream().map(c -> {
-            ChatMessage lastChatMessage = null; // TODO: implement last-chat-message
+            //ChatMessage lastChatMessage = null; // TODO: implement last-chat-message
+            ChatMessage lastChatMessage = messageService.findLatestByUsers(c.getFirstUser().getId(), c.getSecondUser().getId());
             User user = baseUser.getId().equals(c.getFirstUser().getId()) ? c.getSecondUser() : c.getFirstUser();
             return convertEntityToResponse(c.getId(), user, lastChatMessage, c.getSeen());
         }).toList();
