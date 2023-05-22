@@ -10,6 +10,10 @@ import java.util.UUID;
 
 @Data
 @Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookCharacterDTO {
     private UUID id;
     private String name;

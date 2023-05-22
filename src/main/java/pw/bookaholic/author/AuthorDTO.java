@@ -12,6 +12,10 @@ import java.util.UUID;
 
 @Builder
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthorDTO {
     @Id
     private UUID id;

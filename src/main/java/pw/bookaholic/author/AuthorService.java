@@ -2,7 +2,10 @@ package pw.bookaholic.author;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pw.bookaholic.exceptions.AlreadyExistsException;
 
 import java.util.List;
@@ -33,10 +36,15 @@ public class AuthorService {
     }
 
     public Object addNewAuthor(AuthorDTO authorDTO) throws AlreadyExistsException {
-        if ((authorRepository.findAuthorByName(authorDTO.getName())) != null) {
+        if ((authorRepository.findAuthorByName(authorDTO.getName())).isPresent()) {
             throw new AlreadyExistsException("This author is already added");
         }
         return response(authorMapper.authorToAuthorDto(authorRepository.save(authorMapper.authorDtoToAuthor(authorDTO))),
                 "Successfully added new author");
+    }
+
+    public Object getAuthorListByName(String name) {
+        return response(authorRepository.findAllByNameContainsIgnoreCase(name).stream().map(authorMapper::authorToAuthorDto).collect(Collectors.toList()),
+                "Successfully found all authors with this name");
     }
 }

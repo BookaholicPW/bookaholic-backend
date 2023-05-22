@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
 import pw.bookaholic.author.Author;
 import pw.bookaholic.bookCharacter.BookCharacter;
 import pw.bookaholic.bookGenre.Genre;
+import org.hibernate.type.SqlTypes;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +26,8 @@ public class Book {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @JdbcTypeCode(SqlTypes.BINARY)
+    @Column(length = 16, columnDefinition = "binary(16)", updatable = false, nullable = false)
     private UUID id;
 
     @NotNull
