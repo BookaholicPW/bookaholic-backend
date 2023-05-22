@@ -2,6 +2,8 @@ package pw.bookaholic.bookGenre;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pw.bookaholic.book.Book;
+import pw.bookaholic.book.BookRepository;
 import pw.bookaholic.exceptions.AlreadyExistsException;
 
 import java.util.NoSuchElementException;
@@ -15,11 +17,11 @@ import static pw.bookaholic.utils.Utils.response;
 public class GenreService {
 
     private GenreRepository genreRepository;
+    private BookRepository bookRepository;
     private GenreMapper genreMapper;
 
     public Object getListGenres() {
-        return response(genreRepository.findAll().stream().map(genreMapper::genreToGenreDto).collect(Collectors.toList()),
-                "Successfully found genres");
+        return response(genreRepository.findAll().stream().map(genreMapper::genreToGenreDto).collect(Collectors.toList()), "Successfully found genres");
     }
 
     public Object getGenreById(UUID id) {
@@ -31,6 +33,15 @@ public class GenreService {
         if (genreRepository.findByName(genreDTO.getName()) != null) {
             throw new AlreadyExistsException("Genre with this name already exists");
         }
-        return response(genreRepository.save(genreMapper.genreDtoToGenre(genreDTO)), "Successfully added genre");
+        if (!genreDTO.getBooks().isEmpty() &&
+                genreDTO.getBooks().size() != bookRepository.findAllById(genreDTO.getBooks().stream().map(Book::getId).toList()).size()) {
+            throw new NoSuchElementException("Can not find book ids");
+        }
+        return response(genreMapper.genreToGenreDto(genreRepository.save(genreMapper.genreDtoToGenre(genreDTO))), "Successfully added genre");
+    }
+
+    public Object getGenresByName(String name) {
+        return response(genreRepository.findAllByNameContainsIgnoreCase(name).stream().map(genreMapper::genreToGenreDto).collect(Collectors.toList()),
+                "Successfully found all genre with this name");
     }
 }
