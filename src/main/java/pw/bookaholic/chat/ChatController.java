@@ -20,6 +20,6 @@ public class ChatController {
 
     @GetMapping
     public ResponseEntity<Object> getAllChats(@RequestHeader HttpHeaders headers) {
-        return ResponseEntity.ok().body(chatService.getAllchats(headers));
+        return ResponseEntity.ok().body(chatService.getAllChats(headers));
     }
 }

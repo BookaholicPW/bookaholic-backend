@@ -33,4 +33,5 @@ public class Chat {
     @OneToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ChatMessage lastChatMessage;
+    private Boolean seen;
 }
