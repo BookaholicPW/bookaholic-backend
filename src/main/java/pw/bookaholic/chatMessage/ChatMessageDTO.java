@@ -1,19 +1,22 @@
-package pw.bookaholic.chat;
+package pw.bookaholic.chatMessage;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pw.bookaholic.chatMessage.ChatMessageDTO;
+import pw.bookaholic.user.User;
 import pw.bookaholic.user.UserBaseResponse;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatResponse {
+public class ChatMessageDTO {
     private UUID id;
+    private Long time;
     private UserBaseResponse sender;
-    private ChatMessageDTO lastChatMessage;
-    private Boolean seen;
+    private String content;
+    private String type;
 }
