@@ -2,6 +2,11 @@ package pw.bookaholic.book;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
+import pw.bookaholic.author.AuthorRepository;
+import pw.bookaholic.bookGenre.Genre;
+import pw.bookaholic.bookGenre.GenreDTO;
+import pw.bookaholic.bookGenre.GenreRepository;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -13,6 +18,8 @@ import static pw.bookaholic.utils.Utils.response;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final GenreRepository genreRepository;
     private final BookMapper bookMapper;
 
     public Object getListBooks() {
@@ -31,6 +38,14 @@ public class BookService {
     }
 
     public Object addBook(BookDTO bookDTO) {
-        return response(bookRepository.save(bookMapper.bookDtoToBook(bookDTO)), "Successfully added new book");
+        if (bookDTO.getAuthor() != null && authorRepository.findById(bookDTO.getAuthor().getId()).isEmpty()) {
+            throw new NoSuchElementException("Not found author with this id");
+        }
+        if (!bookDTO.getGenres().isEmpty() &&
+                bookDTO.getGenres().size() != genreRepository.findAllById(bookDTO.getGenres().stream().map(GenreDTO::getId).toList()).size()) {
+            throw new NoSuchElementException("Can not found genre with this id");
+        }
+        return response(bookMapper.bookToBookDto(bookRepository.save(bookMapper.bookDtoToBook(bookDTO))),
+                "Successfully added new book");
     }
 }

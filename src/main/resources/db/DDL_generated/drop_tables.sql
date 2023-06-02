@@ -1,7 +1,16 @@
 DROP TABLE IF EXISTS `databasechangeloglock`;
 DROP TABLE IF EXISTS `databasechangelog`;
+delete from chat_message;
+delete from chat;
+DROP TABLE IF EXISTS `chat`;
+DROP TABLE IF EXISTS `chat_message`;
 DROP TABLE IF EXISTS `book_genre`;
 DROP TABLE IF EXISTS `book_character`;
+DROP TABLE IF EXISTS `users_books`;
+DROP TABLE IF EXISTS `users_authors`;
+DROP TABLE IF EXISTS `users_genres`;
+DROP TABLE IF EXISTS `verification_token`;
+DROP TABLE IF EXISTS `matching`;
 DROP TABLE IF EXISTS `genre`;
 DROP TABLE IF EXISTS `book`;
 DROP TABLE IF EXISTS `author`;

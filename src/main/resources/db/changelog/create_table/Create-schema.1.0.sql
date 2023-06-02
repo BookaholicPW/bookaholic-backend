@@ -3,7 +3,6 @@
 --changeset Daria:1
 
 
-
 --
 -- Table structure for table `users`
 --
@@ -21,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `users` (
                           UNIQUE KEY (`username_`),
                          PRIMARY KEY (`id`)
 );
+
 
 --
 -- Table structure for table `author`

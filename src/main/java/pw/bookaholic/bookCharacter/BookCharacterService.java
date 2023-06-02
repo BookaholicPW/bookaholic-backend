@@ -5,46 +5,44 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import pw.bookaholic.book.BookMapper;
+import pw.bookaholic.book.BookRepository;
 
-import java.awt.print.Book;
+import static pw.bookaholic.utils.Utils.response;
+
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class BookCharacterService {
 
     private BookCharacterRepository bookCharacterRepo;
+    private BookRepository bookRepository;
     private final BookCharacterMapper bookCharacterMapper;
 
-    @Transactional
-    public ResponseEntity<Void> addBookCharacter(BookCharacterDTO bookCharDTO){
-        BookCharacter bookCharacter = new BookCharacter(
-                bookCharDTO.getId(),
-                bookCharDTO.getName(),
-                bookCharDTO.getBook());
-        bookCharacterRepo.save(bookCharacter);
-
-        return ResponseEntity.ok().build();
+    public Object getListCharacters() {
+        return response(bookCharacterRepo.findAll().stream().map(bookCharacterMapper::bookCharToBookCharDto).collect(Collectors.toList()),
+                "Successfully found book characters");
     }
 
-    public ResponseEntity<Void> editBookCharacterName(BookCharacterDTO editedChar){
-        Optional<BookCharacter> optBookChar = bookCharacterRepo.findById(editedChar.getId());
-        if(optBookChar.isPresent()){
-            return ResponseEntity.badRequest().build();
-        }
-        BookCharacter bookCharacter = optBookChar.get();
-        bookCharacter.setName(editedChar.getName());
-        return ResponseEntity.ok().build();
+    public Object getCharacterById(UUID id) {
+        BookCharacter bookCharacter = bookCharacterRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Not found character with this id"));
+        return response(bookCharacterMapper.bookCharToBookCharDto(bookCharacter), "Successfully found character");
     }
 
-    public BookCharacterDTO getBookCharByName(String name){
-        Optional<BookCharacter> optBookChar = bookCharacterRepo.findByName(name);
-        if(optBookChar.isPresent()){
-            throw new NoResultException("Book Character not found!");
+    public Object getCharacterByName(String name) {
+        return response(bookCharacterRepo.findAllByNameContainsIgnoreCase(name).stream().map(bookCharacterMapper::bookCharToBookCharDto).collect(Collectors.toList()),
+                "Successfully found all characters with this name");
+    }
+
+    public Object addBookCharacter(BookCharacterDTO characterDTO) {
+        if (characterDTO.getBook() != null && bookRepository.getBookById(characterDTO.getBook().getId()).isEmpty()) {
+            throw new NoSuchElementException("Not found book with this id");
         }
-        BookCharacter bookCharacter = optBookChar.get();
-        return bookCharacterMapper.bookCharToBookCharDto(bookCharacter);
+        return response(bookCharacterMapper.bookCharToBookCharDto(bookCharacterRepo.save(bookCharacterMapper.bookCharDtoToBookChar(characterDTO))),
+                "Successfully created new character");
     }
 
 

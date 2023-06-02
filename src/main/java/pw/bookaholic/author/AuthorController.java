@@ -29,6 +29,11 @@ public class AuthorController {
         return ResponseEntity.ok().body(authorService.getAuthorById(id));
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<Object> findAuthors(@RequestParam("name") String name) {
+        return ResponseEntity.ok().body(authorService.getAuthorListByName(name));
+    }
+
     @PostMapping()
     public ResponseEntity<Object> postAuthor(@RequestBody AuthorDTO authorDTO) throws AlreadyExistsException {
         return ResponseEntity.ok().body(authorService.addNewAuthor(authorDTO));
