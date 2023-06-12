@@ -1,5 +1,6 @@
 package pw.bookaholic.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -35,13 +36,16 @@ public class User implements UserDetails {
     private Long createdAt;
     private Long updatedAt;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_books")
+    @JoinTable(name = "users_books", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "books_id"))
+    @JsonIgnore
     private List<Book> favoriteBooks;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_authors")
+    @JoinTable(name = "users_authors", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "authors_id"))
+    @JsonIgnore
     private List<Author> favoriteAuthors;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_genres")
+    @JoinTable(name = "users_genres", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "genres_id"))
+    @JsonIgnore
     private List<Genre> favoriteGenres;
 
     private boolean verified;

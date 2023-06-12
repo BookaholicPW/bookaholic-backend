@@ -115,4 +115,4 @@ VALUES (UUID_TO_BIN(UUID()), "https://cdn3.iconfinder.com/data/icons/cat-power-p
         "Passionate about literature. Enjoys writing short stories.", 1679363200, "test19@gmail.com", "Daniel Foster",
         "$2a$10$vw.GtZlHHHnKJFvd873vauPE2qGzVPEeHFMeNQD44ZOl4peqRpkkm", "danielf");
 
-
+update users set verified = 1;

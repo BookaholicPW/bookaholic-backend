@@ -110,13 +110,22 @@ public class UserService {
             List<Book> books = bookRepository.findAllById(user.getFavoriteBooks());
             userToUpdate.setFavoriteBooks(books);
         }
+        else {
+            userToUpdate.setFavoriteBooks(null);
+        }
         if (user.getFavoriteAuthors() != null) {
             List<Author> authors = authorRepository.findAllById(user.getFavoriteAuthors());
             userToUpdate.setFavoriteAuthors(authors);
         }
+        else {
+            userToUpdate.setFavoriteAuthors(null);
+        }
         if (user.getFavoriteGenres() != null) {
             List<Genre> genres = genreRepository.findAllById(user.getFavoriteGenres());
             userToUpdate.setFavoriteGenres(genres);
+        }
+        else {
+            userToUpdate.setFavoriteGenres(null);
         }
         userToUpdate.setUpdatedAt(System.currentTimeMillis());
         User savedUser = userRepository.save(userToUpdate);
@@ -125,10 +134,10 @@ public class UserService {
 
     public Object getUserInfo(HttpHeaders headers) {
         String email = getEmailFromToken(headers);
-        Optional<User> findUserByEmail = userRepository.findByEmail(email);
-        if (findUserByEmail.isEmpty())
-            throw new NoResultException("User not found!");
-        return response(convertEntityToBase(findUserByEmail.get()), "Successfully get user info");
+        System.out.println("email: " + email);
+        User findUserByEmail = userRepository.findByEmail(email).orElseThrow(() -> new NoResultException("User not found!"));
+        System.out.println(findUserByEmail.getFavoriteGenres().size());
+        return response(convertEntityToBase(findUserByEmail), "Successfully get user info");
     }
 
     public void verifyUser(String email) {
