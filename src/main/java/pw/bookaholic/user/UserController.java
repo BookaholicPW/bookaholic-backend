@@ -4,7 +4,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
@@ -21,5 +26,11 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<Object> getUserInfo(@RequestHeader HttpHeaders headers) {
         return ResponseEntity.ok().body(userService.getUserInfo(headers));
+    }
+
+    @PostMapping("/avt")
+    public ResponseEntity<Object> submit(@RequestParam("file") MultipartFile file, @RequestHeader HttpHeaders headers)
+    {
+        return ResponseEntity.ok().body(userService.save(file, headers));
     }
 }

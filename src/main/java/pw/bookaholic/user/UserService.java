@@ -6,6 +6,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pw.bookaholic.author.Author;
 import pw.bookaholic.author.AuthorRepository;
 import pw.bookaholic.book.Book;
@@ -14,6 +15,8 @@ import pw.bookaholic.bookGenre.Genre;
 import pw.bookaholic.bookGenre.GenreRepository;
 import pw.bookaholic.matching.MatchingRepository;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static pw.bookaholic.config.ApplicationConfig.modelMapper;
@@ -134,13 +137,25 @@ public class UserService {
 
     public Object getUserInfo(HttpHeaders headers) {
         String email = getEmailFromToken(headers);
-        System.out.println("email: " + email);
         User findUserByEmail = userRepository.findByEmail(email).orElseThrow(() -> new NoResultException("User not found!"));
-        System.out.println(findUserByEmail.getFavoriteGenres().size());
         return response(convertEntityToBase(findUserByEmail), "Successfully get user info");
     }
 
     public void verifyUser(String email) {
         userRepository.verifyUser(email);
+    }
+
+    public Object save(MultipartFile file, HttpHeaders headers) {
+
+        String email = getEmailFromToken(headers);
+        User findUserByEmail = userRepository.findByEmail(email).orElseThrow(() -> new NoResultException("User not found!"));
+        UUID id = findUserByEmail.getId();
+        File file1 = new File(System.getenv("CONTENT_LOCATION") + "/" + id);
+        try {
+            file.transferTo(file1);
+        } catch (IOException e) {
+            throw new RuntimeException("Error uploading file!");
+        }
+        return response(null, "Successfully uploaded file");
     }
 }
