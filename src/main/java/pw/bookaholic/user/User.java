@@ -35,15 +35,15 @@ public class User implements UserDetails {
     private String bio;
     private Long createdAt;
     private Long updatedAt;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_books", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "books_id"))
     @JsonIgnore
     private List<Book> favoriteBooks;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_authors", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "authors_id"))
     @JsonIgnore
     private List<Author> favoriteAuthors;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_genres", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "genres_id"))
     @JsonIgnore
     private List<Genre> favoriteGenres;
