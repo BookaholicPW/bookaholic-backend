@@ -90,3 +90,6 @@ target/
 
 # all files ending in .pem
 *.pem
+
+.env
+image/
