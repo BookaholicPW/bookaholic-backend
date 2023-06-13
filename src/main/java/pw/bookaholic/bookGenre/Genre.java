@@ -30,16 +30,10 @@ public class Genre {
     @NotNull
     String name;
 
-//    @ManyToMany(fetch = FetchType.EAGER,
-//            cascade = {
-//                    CascadeType.MERGE
-//            },
-//            mappedBy = "genres")
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "book_genre",
-//            joinColumns = @JoinColumn(name = "genre_id"),
-//            inverseJoinColumns = @JoinColumn(name = "book_id"))
-//    @JsonIgnore
-//    private Set<Book> books = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "book_genre",
+            joinColumns = @JoinColumn(name = "genre_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @JsonIgnore
+    private Set<Book> books = new HashSet<>();
 }
