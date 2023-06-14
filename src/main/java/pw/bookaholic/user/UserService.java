@@ -21,6 +21,7 @@ import java.util.*;
 
 import static pw.bookaholic.config.ApplicationConfig.modelMapper;
 import static pw.bookaholic.config.JwtService.extractUserEmail;
+import static pw.bookaholic.utils.Utils.media_url;
 import static pw.bookaholic.utils.Utils.response;
 
 @Service
@@ -156,6 +157,8 @@ public class UserService {
         } catch (IOException e) {
             throw new RuntimeException("Error uploading file!");
         }
+        findUserByEmail.setAvatar(media_url + id);
+        userRepository.save(findUserByEmail);
         return response(null, "Successfully uploaded file");
     }
 }

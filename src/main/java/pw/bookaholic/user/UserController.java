@@ -28,7 +28,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUserInfo(headers));
     }
 
-    @PostMapping("/avt")
+    @PostMapping("/avatar")
     public ResponseEntity<Object> submit(@RequestParam("file") MultipartFile file, @RequestHeader HttpHeaders headers)
     {
         return ResponseEntity.ok().body(userService.save(file, headers));
