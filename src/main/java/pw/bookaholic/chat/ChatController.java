@@ -34,9 +34,9 @@ public class ChatController {
 
     @PostMapping("{id}/messages")
     public ResponseEntity<Object> sendMessage(@RequestHeader HttpHeaders headers,
-                                               @PathVariable("id") UUID id,
-                                               @RequestBody Message message,
-                                              @RequestParam("file") MultipartFile file) {
+                                              @PathVariable("id") UUID id,
+                                              @RequestBody Message message,
+                                              @RequestParam(value = "file", required = false) MultipartFile file) {
         return ResponseEntity.ok().body(chatService.sendMessage(headers, id, message, file));
     }
 }
