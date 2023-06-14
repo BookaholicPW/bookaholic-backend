@@ -100,7 +100,9 @@ public class ChatService {
             throw new NoSuchElementException("Chat not found!");
         if (!(message.getType().equals("text") || message.getType().equals("image")))
             throw new IllegalArgumentException("Message type not supported!");
-        if (message.getContent().length() > 1000)
+        if (message.getType().equals("text") && message.getContent() == null)
+            throw new IllegalArgumentException("Message content cannot be null!");
+        if (message.getType().equals("text") && message.getContent().length() > 1000)
             throw new IllegalArgumentException("Message content too long!");
         if (message.getType().equals("text")) {
             ChatMessage chatMessage = new ChatMessage(UUID.randomUUID(), System.currentTimeMillis(), chat, baseUser, message.getContent(), message.getType());
