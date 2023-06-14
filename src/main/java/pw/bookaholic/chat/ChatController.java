@@ -1,7 +1,7 @@
 package pw.bookaholic.chat;
 
+import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.mail.Multipart;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -32,11 +32,13 @@ public class ChatController {
         return ResponseEntity.ok().body(chatService.getChat(headers, id, lastMessageId, isUntil));
     }
 
-    @PostMapping("{id}/messages")
+    @PostMapping(value = "{id}/messages", consumes = "multipart/form-data")
     public ResponseEntity<Object> sendMessage(@RequestHeader HttpHeaders headers,
-                                               @PathVariable("id") UUID id,
-                                               @RequestBody Message message,
-                                              @RequestParam("file") MultipartFile file) {
+                                              @PathVariable("id") UUID id,
+                                              @RequestParam("message") String messageStr,
+                                              @RequestParam(value = "file", required = false) MultipartFile file) {
+        Gson gson = new Gson();
+        Message message = gson.fromJson(messageStr, Message.class);
         return ResponseEntity.ok().body(chatService.sendMessage(headers, id, message, file));
     }
 }
