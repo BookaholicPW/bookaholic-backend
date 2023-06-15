@@ -32,11 +32,11 @@ public class ChatController {
         return ResponseEntity.ok().body(chatService.getChat(headers, id, lastMessageId, isUntil));
     }
 
-    @PostMapping(value = "{id}/messages", consumes = "multipart/form-data")
+    @PostMapping(value = "{id}/messages", consumes = {"multipart/form-data"})
     public ResponseEntity<Object> sendMessage(@RequestHeader HttpHeaders headers,
                                               @PathVariable("id") UUID id,
-                                              @RequestParam("message") String messageStr,
-                                              @RequestParam(value = "file", required = false) MultipartFile file) {
+                                              @RequestPart("message") String messageStr,
+                                              @RequestPart(value = "file", required = false) MultipartFile file) {
         Gson gson = new Gson();
         Message message = gson.fromJson(messageStr, Message.class);
         return ResponseEntity.ok().body(chatService.sendMessage(headers, id, message, file));

@@ -45,8 +45,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, UUID> 
     @Query(
             value = """
                     select * from chat_message where chat_id = ?1
-                    and time <= (select time from chat_message where id = ?2)
-                    order by time asc
+                    and time >= (select time from chat_message where id = ?2)
+                    order by time desc
                     limit 25
                     """,
             nativeQuery = true
