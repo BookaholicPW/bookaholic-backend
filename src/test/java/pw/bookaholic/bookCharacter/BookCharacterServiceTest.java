@@ -25,11 +25,12 @@ public class BookCharacterServiceTest {
 
     @Test
     public void testGetCharacterById() {
-        Object response = service.getCharacterById(UUID.fromString("5c666e02-0b76-11ee-98bc-9cfce8633327"));
         BookCharacter character = BookCharacter.builder()
                 .id(UUID.fromString("5c666e02-0b76-11ee-98bc-9cfce8633327"))
                 .name("Captain Flint")
                 .build();
+        repository.save(character);
+        Object response = service.getCharacterById(UUID.fromString("5c666e02-0b76-11ee-98bc-9cfce8633327"));
         Map<String, Object> expected = new HashMap<>();
         expected.put("success", true);
         expected.put("data", mapper.bookCharToBookCharDto(character));
@@ -39,7 +40,6 @@ public class BookCharacterServiceTest {
 
     @Test
     void testGetCharacters() {
-        Object resp = service.getListCharacters();
         List<BookCharacterDTO> characterDTOS = new ArrayList<>();
         BookCharacter character1 = BookCharacter.builder()
                 .id(UUID.fromString("5c666e02-0b76-11ee-98bc-9cfce8633327"))
@@ -49,6 +49,9 @@ public class BookCharacterServiceTest {
                 .id(UUID.fromString("5c666a99-0b76-11ee-98bc-9cfce8633327"))
                 .name("Long John Silver")
                 .build();
+        repository.save(character1);
+        repository.save(character2);
+        Object resp = service.getListCharacters();
         characterDTOS.add(mapper.bookCharToBookCharDto(character1));
         characterDTOS.add(mapper.bookCharToBookCharDto(character2));
         Map<String, Object> expected = new HashMap<>();

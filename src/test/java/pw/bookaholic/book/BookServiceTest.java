@@ -25,12 +25,15 @@ public class BookServiceTest {
 
     @Test
     public void testGetBookById() {
-        Object response = bookService.getBookById(UUID.fromString("5c49b605-0b76-11ee-98bc-9cfce8633327"));
         Book newBook = Book.builder()
                 .id(UUID.fromString("5c49b605-0b76-11ee-98bc-9cfce8633327"))
                 .title("The Adventures of Tom Sawyer")
                 .published(204249600L)
+                .genres(new HashSet<>())
+                .characters(new HashSet<>())
                 .build();
+        bookRepository.save(newBook);
+        Object response = bookService.getBookById(UUID.fromString("5c49b605-0b76-11ee-98bc-9cfce8633327"));
         Map<String, Object> expected = new HashMap<>();
         expected.put("success", true);
         expected.put("data", bookMapper.bookToBookDto(newBook));
@@ -40,19 +43,25 @@ public class BookServiceTest {
 
     @Test
     void testGetBooks() {
-        Object resp = bookService.getListBooks();
+
         List<BookDTO> bookDTOS = new ArrayList<>();
         Book newBook1 = Book.builder()
                 .id(UUID.fromString("5c49b605-0b76-11ee-98bc-9cfce8633327"))
                 .title("The Adventures of Tom Sawyer")
                 .published(204249600L)
+                .genres(new HashSet<>())
+                .characters(new HashSet<>())
                 .build();
         Book newBook2 = Book.builder()
                 .id(UUID.fromString("5c54c80f-0b76-11ee-98bc-9cfce8633327"))
                 .title("The Lord of the Rings")
+                .genres(new HashSet<>())
+                .characters(new HashSet<>())
                 .published(534950400L)
                 .build();
-
+        bookRepository.save(newBook1);
+        bookRepository.save(newBook2);
+        Object resp = bookService.getListBooks();
         bookDTOS.add(bookMapper.bookToBookDto(newBook1));
         bookDTOS.add(bookMapper.bookToBookDto(newBook2));
         Map<String, Object> expected = new HashMap<>();
