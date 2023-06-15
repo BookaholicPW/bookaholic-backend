@@ -1,7 +1,9 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.0.5'
-	id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id("com.github.nbaztec.coveralls-jacoco") version "1.2.15"
+    id "jacoco"
 }
 
 group = 'pw'
@@ -9,37 +11,57 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'mysql:mysql-connector-java:8.0.33'
-	implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
-	implementation 'org.modelmapper:modelmapper:3.1.1'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.liquibase:liquibase-core'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compileOnly 'org.projectlombok:lombok'
-	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
+    implementation 'org.modelmapper:modelmapper:3.1.1'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.h2database:h2:2.1.214'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.liquibase:liquibase-core'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'com.h2database:h2:2.1.214'
+
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
+}
+
+jacoco {
+    reportsDirectory = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true // coveralls plugin depends on xml format report
+        html.required = true
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/test.exec")
+    }
 }
