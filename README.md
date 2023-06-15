@@ -39,3 +39,10 @@ We used Swagger in our endpoints. The full list is availible at https://api.book
 ![s2.png](doc%2Fs2.png)
 ![s3.png](doc%2Fs3.png)
 
+### Example of use
+
+The link below leads to an example of use:
+
+https://www.youtube.com/watch?v=n4abGO0LthQ
+
+
