@@ -52,20 +52,20 @@ public class AuthenticationService {
         user.setVerified(true);
         User savedUser = userRepository.save(user);
 
-        String token = UUID.randomUUID().toString();
-        VerificationToken verificationToken = new VerificationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(20),
-                savedUser
-        );
-        verificationToken.setId(UUID.randomUUID());
-        verificationService.saveVerificationToken(verificationToken);
+//        String token = UUID.randomUUID().toString();
+//        VerificationToken verificationToken = new VerificationToken(
+//                token,
+//                LocalDateTime.now(),
+//                LocalDateTime.now().plusMinutes(20),
+//                savedUser
+//        );
+//        verificationToken.setId(UUID.randomUUID());
+//        verificationService.saveVerificationToken(verificationToken);
+//
+//        String link = "https://api.bookaholic.pl/account/verify?token=" +token;
+//        emailSender.send(request.getEmail(), link);
 
-        String link = "https://api.bookaholic.pl/account/verify?token=" +token;
-        emailSender.send(request.getEmail(), link);
-
-        return response(convertEntityToBase(savedUser), "Successfully registered, please check your email for verification link");
+        return response(convertEntityToBase(savedUser), "Successfully registered!");
     }
 
     public Object authenticate(AuthenticationRequest request) {
