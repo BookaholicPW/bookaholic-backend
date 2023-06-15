@@ -29,7 +29,7 @@ public class BookCharacter {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "book_id")
     private Book book;

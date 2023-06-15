@@ -22,15 +22,12 @@ import java.util.UUID;
 @Getter
 public class Genre {
     @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//    @JdbcTypeCode(SqlTypes.BINARY)
-//    @Column(length = 16, columnDefinition = "binary(16)", updatable = false, nullable = false)
+
     private UUID id;
     @NotNull
     String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "book_genre",
             joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))

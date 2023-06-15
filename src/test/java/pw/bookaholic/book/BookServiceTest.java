@@ -1,5 +1,6 @@
 package pw.bookaholic.book;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class BookServiceTest {
     BookMapper bookMapper;
 
     @Test
+    @Transactional
     public void testGetBookById() {
         Book newBook = Book.builder()
                 .id(UUID.fromString("5c49b605-0b76-11ee-98bc-9cfce8633327"))
@@ -42,6 +44,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void testGetBooks() {
 
         List<BookDTO> bookDTOS = new ArrayList<>();

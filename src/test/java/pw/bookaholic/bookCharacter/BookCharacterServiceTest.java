@@ -1,5 +1,6 @@
 package pw.bookaholic.bookCharacter;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class BookCharacterServiceTest {
     BookCharacterMapper mapper;
 
     @Test
+    @Transactional
     public void testGetCharacterById() {
         BookCharacter character = BookCharacter.builder()
                 .id(UUID.fromString("5c666e02-0b76-11ee-98bc-9cfce8633327"))
@@ -39,6 +41,7 @@ public class BookCharacterServiceTest {
     }
 
     @Test
+    @Transactional
     void testGetCharacters() {
         List<BookCharacterDTO> characterDTOS = new ArrayList<>();
         BookCharacter character1 = BookCharacter.builder()

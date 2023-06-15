@@ -1,5 +1,6 @@
 package pw.bookaholic.author;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class AuthorServiceTest {
     AuthorMapper authorMapper;
 
     @Test
+    @Transactional
     public void testGetAuthorById() {
         Set<Book> books = new HashSet<>();
         Author newAuthor = new Author(UUID.fromString("348e3f3d-0ab3-11ee-98bc-9cfce8633327"), "Mark Twain",
@@ -40,6 +42,7 @@ public class AuthorServiceTest {
     }
 
     @Test
+    @Transactional
     void testGetAuthors() {
         Set<Book> books = new HashSet<>();
         Author author1 = new Author(UUID.fromString("348e3f3d-0ab3-11ee-98bc-9cfce8633327"), "Mark Twain",

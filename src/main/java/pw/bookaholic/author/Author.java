@@ -35,7 +35,7 @@ public class Author {
     private Long born;
     private Long died;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Set<Book> books = new HashSet<>();

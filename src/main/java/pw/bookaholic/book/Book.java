@@ -34,18 +34,18 @@ public class Book {
     private String title;
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name="author_id")
     private Author author;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     @JsonIgnore
     private Set<Genre> genres = new HashSet<>();
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book")
     @JsonIgnore
     private Set<BookCharacter> characters = new HashSet<>();
 

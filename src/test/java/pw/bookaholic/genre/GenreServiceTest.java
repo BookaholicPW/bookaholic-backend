@@ -1,5 +1,6 @@
 package pw.bookaholic.genre;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class GenreServiceTest {
     GenreMapper genreMapper;
 
     @Test
+    @Transactional
     public void testGetGenreById() {
         Genre genre = Genre.builder()
                 .id(UUID.fromString("5c48e0f7-0b76-11ee-98bc-9cfce8633327"))
@@ -41,6 +43,7 @@ public class GenreServiceTest {
     }
 
     @Test
+    @Transactional
     void testGetGenres() {
         List<GenreDTO> genreDTOS = new ArrayList<>();
         Genre genre1 = Genre.builder()
