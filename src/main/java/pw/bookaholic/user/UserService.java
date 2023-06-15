@@ -21,6 +21,7 @@ import java.util.*;
 
 import static pw.bookaholic.config.ApplicationConfig.modelMapper;
 import static pw.bookaholic.config.JwtService.extractUserEmail;
+import static pw.bookaholic.utils.Utils.media_url;
 import static pw.bookaholic.utils.Utils.response;
 
 @Service
@@ -52,8 +53,14 @@ public class UserService {
     public User getMatchUser(UUID id) {
         List<UUID> userIdsToMatch = new ArrayList<>(matchingRepository.findFirstUserIds(id).stream().map(m -> m.getFirstUser().getId()).toList());
         userIdsToMatch.addAll(matchingRepository.findSecondUserIds(id).stream().map(m -> m.getSecondUser().getId()).toList());
-        List<UUID> userIds = new ArrayList<>(userRepository.findAll().stream().map(User::getId).toList());
         userIdsToMatch.add(id);
+        List<UUID> userIds = new ArrayList<>(
+                userRepository
+                        .findAll()
+                        .stream()
+                        .filter(m -> m.getName() != null && m.getBio() != null)
+                        .map(User::getId)
+                        .toList());
         userIds.removeAll(userIdsToMatch);
         if (userIds.size() == 0)
             return null;
@@ -112,22 +119,19 @@ public class UserService {
         if (user.getFavoriteBooks() != null) {
             List<Book> books = bookRepository.findAllById(user.getFavoriteBooks());
             userToUpdate.setFavoriteBooks(books);
-        }
-        else {
+        } else {
             userToUpdate.setFavoriteBooks(null);
         }
         if (user.getFavoriteAuthors() != null) {
             List<Author> authors = authorRepository.findAllById(user.getFavoriteAuthors());
             userToUpdate.setFavoriteAuthors(authors);
-        }
-        else {
+        } else {
             userToUpdate.setFavoriteAuthors(null);
         }
         if (user.getFavoriteGenres() != null) {
             List<Genre> genres = genreRepository.findAllById(user.getFavoriteGenres());
             userToUpdate.setFavoriteGenres(genres);
-        }
-        else {
+        } else {
             userToUpdate.setFavoriteGenres(null);
         }
         userToUpdate.setUpdatedAt(System.currentTimeMillis());
@@ -156,6 +160,8 @@ public class UserService {
         } catch (IOException e) {
             throw new RuntimeException("Error uploading file!");
         }
+        findUserByEmail.setAvatar(media_url + id);
+        userRepository.save(findUserByEmail);
         return response(null, "Successfully uploaded file");
     }
 }

@@ -47,7 +47,9 @@ public class AuthenticationService {
         user.setCreatedAt(System.currentTimeMillis());
         user.setUpdatedAt(System.currentTimeMillis());
         user.setId(UUID.randomUUID());
-        user.setVerified(false);
+        // Disable verification for because of server issues
+//        user.setVerified(false);
+        user.setVerified(true);
         User savedUser = userRepository.save(user);
 
         String token = UUID.randomUUID().toString();

@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -57,6 +58,7 @@ jacocoTestReport {
         xml.required = true // coveralls plugin depends on xml format report
         html.required = true
     }
+
 }
 
 tasks.named('test') {
